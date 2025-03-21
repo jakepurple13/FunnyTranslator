@@ -15,6 +15,8 @@ import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.gabb.funnytranslator.translators.CatTranslator
 import com.gabb.funnytranslator.translators.DogTranslator
 import com.gabb.funnytranslator.translators.GrootTranslator
@@ -32,14 +34,14 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun App(initialText: String = "") {
     MaterialTheme(getColorScheme()) {
         TranslatorContent(
-            translators = remember { Translators(initialText) }
+            translators = viewModel { Translators(initialText) }
         )
     }
 }
 
 class Translators(
     initialText: String,
-) {
+) : ViewModel() {
     val translatorList = listOf(
         Uwuify,
         Pirate,
