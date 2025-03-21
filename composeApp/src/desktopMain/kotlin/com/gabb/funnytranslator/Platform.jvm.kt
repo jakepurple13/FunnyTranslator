@@ -7,7 +7,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
 class JVMPlatform : Platform {
-    override val name: String = "Java ${System.getProperty("java.version")}"
+    override val name: String = "Desktop Java ${System.getProperty("java.version")}"
 }
 
 actual fun getPlatform(): Platform = JVMPlatform()

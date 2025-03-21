@@ -177,6 +177,12 @@ fun TranslatorContent(
                         .fillMaxWidth()
                 )
             }
+
+            Text(
+                getPlatform().name,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.outlineVariant,
+            )
         }
     }
 }
