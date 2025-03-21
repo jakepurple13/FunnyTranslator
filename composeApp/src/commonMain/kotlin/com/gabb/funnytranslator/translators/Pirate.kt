@@ -26,4 +26,6 @@ data object Pirate : Translator {
         }
         return translatedWords.joinToString(" ")
     }
+
+    override fun toString(): String = "Pirate Translator"
 }

@@ -75,4 +75,6 @@ data object MorseCode: Translator {
         /* remove accentuated and diacritics */
         return newMessage.replace("\\p{Mn}+".toRegex(), "")
     }
+
+    override fun toString(): String = "Morse Code Translator"
 }

@@ -35,4 +35,6 @@ data object Minionese : Translator {
                     ?: word
             }
     }
+
+    override fun toString(): String = "Minionese Translator"
 }

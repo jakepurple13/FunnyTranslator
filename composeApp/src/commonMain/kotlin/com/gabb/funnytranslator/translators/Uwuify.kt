@@ -119,4 +119,6 @@ data object Uwuify : Translator {
     )
 
     private val punctuation = listOf(',', '.', '!', '?')
+
+    override fun toString(): String = "Uwu Translator"
 }

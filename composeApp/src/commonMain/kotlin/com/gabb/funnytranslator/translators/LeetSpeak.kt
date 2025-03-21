@@ -20,4 +20,6 @@ data object LeetSpeak : Translator {
         )
         return text.lowercase().map { reverseLeetMap[it] ?: it }.joinToString("")
     }
+
+    override fun toString(): String = "LeetSpeak Translator"
 }
