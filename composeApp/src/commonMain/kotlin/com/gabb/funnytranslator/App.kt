@@ -5,10 +5,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material.icons.filled.CopyAll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ClipboardManager
@@ -17,15 +17,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.gabb.funnytranslator.translators.CatTranslator
-import com.gabb.funnytranslator.translators.DogTranslator
-import com.gabb.funnytranslator.translators.GrootTranslator
-import com.gabb.funnytranslator.translators.LeetSpeak
-import com.gabb.funnytranslator.translators.Minionese
-import com.gabb.funnytranslator.translators.MorseCode
-import com.gabb.funnytranslator.translators.Pirate
-import com.gabb.funnytranslator.translators.Translator
-import com.gabb.funnytranslator.translators.Uwuify
+import com.gabb.funnytranslator.translators.*
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -111,6 +103,11 @@ fun TranslatorContent(
                     .padding(16.dp)
                     .fillMaxWidth()
             )
+
+            FilledTonalIconButton(
+                onClick = { translators.text = translators.translatedText },
+                enabled = translators.text.isNotBlank() && translators.currentTranslator != null,
+            ) { Icon(Icons.Default.ArrowUpward, null) }
 
             Card(
                 onClick = {
