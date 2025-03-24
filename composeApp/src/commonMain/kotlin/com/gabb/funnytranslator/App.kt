@@ -15,14 +15,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.gabb.funnytranslator.translators.*
 import com.materialkolor.PaletteStyle
 import com.materialkolor.rememberDynamicColorScheme
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -99,9 +98,12 @@ fun TranslatorContent(
 
             TranslatedContent(
                 translatorViewModel = translatorViewModel,
-                clipboard = clipboard,
-                scope = scope,
-                snackbarHostState = snackbarHostState
+                onCopy = {
+                    scope.launch {
+                        clipboard.setText(AnnotatedString(translatorViewModel.translatedText))
+                        snackbarHostState.showSnackbar("Copied to clipboard")
+                    }
+                }
             )
 
             Text(
@@ -117,17 +119,10 @@ fun TranslatorContent(
 @Composable
 private fun TranslatedContent(
     translatorViewModel: TranslatorViewModel,
-    clipboard: ClipboardManager,
-    scope: CoroutineScope,
-    snackbarHostState: SnackbarHostState,
+    onCopy: () -> Unit,
 ) {
     Card(
-        onClick = {
-            translatorViewModel.copyToClipboard(clipboard)
-            scope.launch {
-                snackbarHostState.showSnackbar("Copied to clipboard")
-            }
-        },
+        onClick = onCopy,
         enabled = translatorViewModel.text.isNotBlank() && translatorViewModel.currentTranslator != null,
         modifier = Modifier.padding(16.dp)
     ) {
@@ -202,12 +197,7 @@ private fun TranslatedContent(
                     translatedText = translatorViewModel::translatedText,
                 )
                 IconButton(
-                    onClick = {
-                        translatorViewModel.copyToClipboard(clipboard)
-                        scope.launch {
-                            snackbarHostState.showSnackbar("Copied to clipboard")
-                        }
-                    },
+                    onClick = onCopy,
                     enabled = translatorViewModel.text.isNotBlank() && translatorViewModel.currentTranslator != null,
                 ) { Icon(Icons.Default.CopyAll, contentDescription = "Copy") }
             }

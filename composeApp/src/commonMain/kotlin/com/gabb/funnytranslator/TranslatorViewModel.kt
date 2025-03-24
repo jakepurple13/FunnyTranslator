@@ -4,8 +4,6 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.ClipboardManager
-import androidx.compose.ui.text.AnnotatedString
 import androidx.lifecycle.ViewModel
 import com.gabb.funnytranslator.translators.*
 
@@ -40,8 +38,4 @@ class TranslatorViewModel(
     }
 
     fun translate(text: String): String? = currentTranslator?.translate(text)
-
-    fun copyToClipboard(clipboard: ClipboardManager) {
-        translatedText.let { clipboard.setText(AnnotatedString(it)) }
-    }
 }
