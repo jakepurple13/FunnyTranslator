@@ -42,7 +42,10 @@ class Translators(
         MorseCode,
         CatTranslator,
         DogTranslator,
-        Minionese
+        Minionese,
+        ShakespeareTranslator,
+        ValleyGirlTranslator,
+        YodaTranslator,
     )
 
     var currentTranslator by mutableStateOf<Translator?>(translatorList.random())
