@@ -1,5 +1,8 @@
 package com.gabb.funnytranslator.translators
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+
 data object ShakespeareTranslator : Translator {
 
     private val modernToShakespearean = mapOf(
@@ -72,4 +75,9 @@ data object ShakespeareTranslator : Translator {
     }
 
     override fun toString(): String = "Shakespeare Translator"
+
+    @Composable
+    override fun getColor(): Color {
+        return Color(0xff023094)
+    }
 }

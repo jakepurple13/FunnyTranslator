@@ -1,5 +1,8 @@
 package com.gabb.funnytranslator.translators
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+
 data object MorseCode: Translator {
     override fun translate(text: String): String {
         return encode(text)
@@ -77,4 +80,9 @@ data object MorseCode: Translator {
     }
 
     override fun toString(): String = "Morse Code Translator"
+
+    @Composable
+    override fun getColor(): Color {
+        return Color(0xffACACAC)
+    }
 }

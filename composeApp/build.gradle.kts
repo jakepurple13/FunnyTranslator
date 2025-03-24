@@ -73,6 +73,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel.compose)
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.kotlinx.serialization.json)
+            implementation(libs.material.kolor)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)

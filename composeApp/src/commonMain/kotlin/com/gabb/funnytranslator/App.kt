@@ -1,30 +1,50 @@
 package com.gabb.funnytranslator
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ListAlt
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.gabb.funnytranslator.translators.*
+import com.materialkolor.PaletteStyle
+import com.materialkolor.rememberDynamicColorScheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 @Preview
-fun App(initialText: String = "") {
-    MaterialTheme(getColorScheme()) {
+fun App(
+    initialText: String = "",
+    translatorViewModel: TranslatorViewModel = viewModel { TranslatorViewModel(initialText) },
+) {
+    MaterialTheme(
+        when (val translator = translatorViewModel.currentTranslator) {
+            null -> getColorScheme()
+            else -> rememberDynamicColorScheme(
+                primary = translator.getColor(),
+                isDark = isSystemInDarkTheme(),
+                isAmoled = false,
+                style = PaletteStyle.Fidelity
+            )
+        }.animate()
+    ) {
         TranslatorContent(
-            translatorViewModel = viewModel { TranslatorViewModel(initialText) }
+            translatorViewModel = translatorViewModel
         )
     }
 }
@@ -135,22 +155,17 @@ private fun TranslatedContent(
                     ) {
                         translatorViewModel.translatorList.forEach { translator ->
                             val translatorName = translator.toString()
-                            val icon = when {
-                                translatorName.contains("Cat")
-                                        || translatorName.contains("Dog") -> Icons.Default.Pets
-
-                                translatorName.contains("Yoda")
-                                        || translatorName.contains("Shakespeare")
-                                        || translatorName.contains("Valley Girl") -> Icons.Default.Translate
-
-                                translatorName.contains("Morse")
-                                        || translatorName.contains("Leet") -> Icons.Default.Code
-
-                                translatorName.contains("Groot")
-                                        || translatorName.contains("Pirate")
-                                        || translatorName.contains("Minionese") -> Icons.Default.FormatQuote
-
-                                else -> Icons.Default.Mood
+                            val icon = when (translator) {
+                                is CatTranslator, is DogTranslator -> Icons.Default.Pets
+                                is YodaTranslator -> Icons.Default.RocketLaunch
+                                is ShakespeareTranslator -> Icons.Default.HistoryEdu
+                                is MorseCode -> Icons.AutoMirrored.Filled.ListAlt
+                                is LeetSpeak -> Icons.Default.Code
+                                is Pirate -> Icons.Default.Sailing
+                                is ValleyGirlTranslator -> Icons.Default.LocalFlorist
+                                is GrootTranslator -> Icons.Default.Park
+                                is Minionese -> Icons.Default.Groups3
+                                else -> Icons.Default.CatchingPokemon
                             }
 
                             Card(
@@ -210,3 +225,37 @@ private fun TranslatedContent(
         )
     }
 }
+
+@Composable
+fun Color.animate(label: String = "") = animateColorAsState(this, label = label)
+
+@Composable
+private fun ColorScheme.animate() = copy(
+    primary.animate().value,
+    onPrimary.animate().value,
+    primaryContainer.animate().value,
+    onPrimaryContainer.animate().value,
+    inversePrimary.animate().value,
+    secondary.animate().value,
+    onSecondary.animate().value,
+    secondaryContainer.animate().value,
+    onSecondaryContainer.animate().value,
+    tertiary.animate().value,
+    onTertiary.animate().value,
+    tertiaryContainer.animate().value,
+    onTertiaryContainer.animate().value,
+    background.animate().value,
+    onBackground.animate().value,
+    surface.animate().value,
+    onSurface.animate().value,
+    surfaceVariant.animate().value,
+    onSurfaceVariant.animate().value,
+    surfaceTint.animate().value,
+    inverseSurface.animate().value,
+    inverseOnSurface.animate().value,
+    error.animate().value,
+    onError.animate().value,
+    errorContainer.animate().value,
+    onErrorContainer.animate().value,
+    outline.animate().value,
+)

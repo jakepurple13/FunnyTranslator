@@ -1,5 +1,8 @@
 package com.gabb.funnytranslator.translators
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+
 data object LeetSpeak : Translator {
     override fun translate(text: String): String {
         return translateToLeet(text)
@@ -22,4 +25,9 @@ data object LeetSpeak : Translator {
     }
 
     override fun toString(): String = "LeetSpeak Translator"
+
+    @Composable
+    override fun getColor(): Color {
+        return Color(0xff73FF00)
+    }
 }

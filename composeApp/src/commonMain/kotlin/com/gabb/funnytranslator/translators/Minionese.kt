@@ -1,5 +1,7 @@
 package com.gabb.funnytranslator.translators
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import funnytranslator.composeapp.generated.resources.Res
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -37,4 +39,9 @@ data object Minionese : Translator {
     }
 
     override fun toString(): String = "Minionese Translator"
+
+    @Composable
+    override fun getColor(): Color {
+        return Color(0xffFFEE00)
+    }
 }

@@ -1,5 +1,7 @@
 package com.gabb.funnytranslator.translators
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import kotlin.random.Random
 
 data object CatTranslator : Translator {
@@ -7,6 +9,11 @@ data object CatTranslator : Translator {
         return text
             .split(" ")
             .joinToString(" ") { if (Random.nextBoolean()) "Meow" else "Nya" }
+    }
+
+    @Composable
+    override fun getColor(): Color {
+        return Color(0xFFFF9D00)
     }
 
     override fun toString(): String = "Cat Translator"
@@ -17,6 +24,11 @@ data object DogTranslator : Translator {
         return text
             .split(" ")
             .joinToString(" ") { if (Random.nextBoolean()) "Woof" else "Bark" }
+    }
+
+    @Composable
+    override fun getColor(): Color {
+        return Color(0xFF9D5100)
     }
 
     override fun toString(): String = "Dog Translator"

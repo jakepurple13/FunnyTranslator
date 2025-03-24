@@ -1,5 +1,7 @@
 package com.gabb.funnytranslator.translators
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import kotlin.random.Random
 
 data object Pirate : Translator {
@@ -271,4 +273,9 @@ data object Pirate : Translator {
     }
 
     override fun toString(): String = "Pirate Translator"
+
+    @Composable
+    override fun getColor(): Color {
+        return Color(0xffFF0000)
+    }
 }

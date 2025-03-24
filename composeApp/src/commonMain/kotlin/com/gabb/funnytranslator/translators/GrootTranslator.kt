@@ -1,5 +1,8 @@
 package com.gabb.funnytranslator.translators
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+
 data object GrootTranslator : Translator {
 
     private val iAmGrootWords = arrayOf("I", "am", "Groot")
@@ -15,4 +18,9 @@ data object GrootTranslator : Translator {
     }
 
     override fun toString(): String = "Groot Translator"
+
+    @Composable
+    override fun getColor(): Color {
+        return Color(0xff397E00)
+    }
 }
