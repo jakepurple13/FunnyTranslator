@@ -104,6 +104,6 @@ data object SurferDudeTranslator : Translator {
 
     @Composable
     override fun getColor(): Color {
-        return Color(0xff00BFFF) // Deep Sky Blue, representing ocean
+        return Color(0xff31FFF5) // Deep Sky Blue, representing ocean
     }
 }
