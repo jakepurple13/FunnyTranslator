@@ -1,11 +1,13 @@
 package com.gabb.funnytranslator
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowUpward
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.CopyAll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -58,6 +60,15 @@ fun TranslatorContent(
                 onValueChange = { translatorViewModel.text = it },
                 label = { Text("Text to translate") },
                 shape = MaterialTheme.shapes.medium,
+                trailingIcon = {
+                    AnimatedVisibility(
+                        visible = translatorViewModel.text.isNotBlank(),
+                    ) {
+                        IconButton(
+                            onClick = { translatorViewModel.text = "" },
+                        ) { Icon(Icons.Default.Clear, null) }
+                    }
+                },
                 modifier = Modifier
                     .padding(16.dp)
                     .background(
