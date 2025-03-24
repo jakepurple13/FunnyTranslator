@@ -165,6 +165,7 @@ private fun TranslatedContent(
                                 is ValleyGirlTranslator -> Icons.Default.LocalFlorist
                                 is GrootTranslator -> Icons.Default.Park
                                 is Minionese -> Icons.Default.Groups3
+                                is Uwuify -> Icons.Default.EmojiEmotions
                                 else -> Icons.Default.CatchingPokemon
                             }
 
