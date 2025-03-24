@@ -92,17 +92,6 @@ a pirate, or even a cat, Funny Translator has got you covered!
   - `wasmJsMain`: Web-specific code
 - `/iosApp`: iOS application entry point
 
-## Contributing
-
-Contributions are welcome! If you'd like to add a new translator or improve an existing one, please feel free to submit
-a pull request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-translator`)
-3. Commit your changes (`git commit -m 'Add some amazing translator'`)
-4. Push to the branch (`git push origin feature/amazing-translator`)
-5. Open a Pull Request
-
 ## License
 
 This project is open source and available under the [MIT License](LICENSE).
