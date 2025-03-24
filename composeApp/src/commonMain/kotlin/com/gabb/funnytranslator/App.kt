@@ -6,9 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowUpward
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.CopyAll
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -79,11 +77,6 @@ fun TranslatorContent(
                     .fillMaxWidth()
             )
 
-            FilledTonalIconButton(
-                onClick = { translatorViewModel.text = translatorViewModel.translatedText },
-                enabled = translatorViewModel.text.isNotBlank() && translatorViewModel.currentTranslator != null,
-            ) { Icon(Icons.Default.ArrowUpward, null) }
-
             TranslatedContent(
                 translatorViewModel = translatorViewModel,
                 clipboard = clipboard,
@@ -100,6 +93,7 @@ fun TranslatorContent(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TranslatedContent(
     translatorViewModel: TranslatorViewModel,
@@ -124,30 +118,70 @@ private fun TranslatedContent(
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            Column {
-                var showTranslatorDialog by remember { mutableStateOf(false) }
+            var showTranslatorDialog by remember { mutableStateOf(false) }
 
-                ElevatedAssistChip(
-                    onClick = { showTranslatorDialog = true },
-                    label = { Text(translatorViewModel.chosenTranslator) },
-                )
+            ElevatedAssistChip(
+                onClick = { showTranslatorDialog = true },
+                label = { Text(translatorViewModel.chosenTranslator) },
+            )
 
-                DropdownMenu(
-                    expanded = showTranslatorDialog,
-                    onDismissRequest = { showTranslatorDialog = false }
+            if (showTranslatorDialog) {
+                ModalBottomSheet(
+                    onDismissRequest = { showTranslatorDialog = false },
+                    containerColor = MaterialTheme.colorScheme.surface,
                 ) {
-                    translatorViewModel.translatorList.forEach { translator ->
-                        DropdownMenuItem(
-                            text = { Text(translator.toString()) },
-                            onClick = {
-                                translatorViewModel.currentTranslator = translator
-                                showTranslatorDialog = false
+                    Column(
+                        modifier = Modifier.verticalScroll(rememberScrollState()),
+                    ) {
+                        translatorViewModel.translatorList.forEach { translator ->
+                            val translatorName = translator.toString()
+                            val icon = when {
+                                translatorName.contains("Cat")
+                                        || translatorName.contains("Dog") -> Icons.Default.Pets
+
+                                translatorName.contains("Yoda")
+                                        || translatorName.contains("Shakespeare")
+                                        || translatorName.contains("Valley Girl") -> Icons.Default.Translate
+
+                                translatorName.contains("Morse")
+                                        || translatorName.contains("Leet") -> Icons.Default.Code
+
+                                translatorName.contains("Groot")
+                                        || translatorName.contains("Pirate")
+                                        || translatorName.contains("Minionese") -> Icons.Default.FormatQuote
+
+                                else -> Icons.Default.Mood
                             }
-                        )
+
+                            Card(
+                                onClick = {
+                                    translatorViewModel.currentTranslator = translator
+                                    showTranslatorDialog = false
+                                }
+                            ) {
+                                ListItem(
+                                    headlineContent = { Text(text = translatorName) },
+                                    leadingContent = { Icon(imageVector = icon, contentDescription = null) },
+                                    trailingContent = {
+                                        if (translator == translatorViewModel.currentTranslator) {
+                                            Icon(imageVector = Icons.Default.Check, contentDescription = null)
+                                        }
+                                    }
+                                )
+                            }
+
+                            HorizontalDivider()
+                        }
                     }
                 }
             }
+
             Row {
+                IconButton(
+                    onClick = { translatorViewModel.text = translatorViewModel.translatedText },
+                    enabled = translatorViewModel.text.isNotBlank() && translatorViewModel.currentTranslator != null,
+                ) { Icon(Icons.Default.SwapVert, null) }
+
                 ShareButton(
                     translatedText = translatorViewModel::translatedText,
                 )
