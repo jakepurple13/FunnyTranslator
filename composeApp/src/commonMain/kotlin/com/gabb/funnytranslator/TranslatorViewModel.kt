@@ -20,6 +20,7 @@ class TranslatorViewModel(
         DogTranslator,
         Minionese,
         ShakespeareTranslator,
+        SurferDudeTranslator,
         ValleyGirlTranslator,
         YodaTranslator,
     )

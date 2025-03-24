@@ -161,6 +161,7 @@ private fun TranslatedContent(
                                 is GrootTranslator -> Icons.Default.Park
                                 is Minionese -> Icons.Default.Groups3
                                 is Uwuify -> Icons.Default.EmojiEmotions
+                                is SurferDudeTranslator -> Icons.Default.Surfing
                                 else -> Icons.Default.CatchingPokemon
                             }
 
