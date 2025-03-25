@@ -24,6 +24,7 @@ class TranslatorViewModel(
         ValleyGirlTranslator,
         YodaTranslator,
         ZombieTranslator,
+        HackerTranslator,
     )
 
     var currentTranslator by mutableStateOf<Translator?>(translatorList.random())
