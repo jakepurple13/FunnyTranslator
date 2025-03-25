@@ -1,7 +1,10 @@
 package com.gabb.funnytranslator.translators
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ListAlt
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 
 data object MorseCode: Translator {
     override fun translate(text: String): String {
@@ -84,5 +87,10 @@ data object MorseCode: Translator {
     @Composable
     override fun getColor(): Color {
         return Color(0xffACACAC)
+    }
+
+    @Composable
+    override fun getIcon(): ImageVector {
+        return Icons.AutoMirrored.Filled.ListAlt
     }
 }

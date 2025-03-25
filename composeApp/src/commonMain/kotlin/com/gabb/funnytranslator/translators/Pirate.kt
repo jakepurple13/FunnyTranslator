@@ -1,7 +1,10 @@
 package com.gabb.funnytranslator.translators
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Sailing
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import kotlin.random.Random
 
 data object Pirate : Translator {
@@ -277,5 +280,10 @@ data object Pirate : Translator {
     @Composable
     override fun getColor(): Color {
         return Color(0xffFF0000)
+    }
+
+    @Composable
+    override fun getIcon(): ImageVector {
+        return Icons.Default.Sailing
     }
 }

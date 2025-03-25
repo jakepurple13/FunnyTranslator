@@ -1,7 +1,10 @@
 package com.gabb.funnytranslator.translators
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.EmojiEmotions
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import kotlin.random.Random
 
 private const val stutterChance = 20
@@ -127,5 +130,10 @@ data object Uwuify : Translator {
     @Composable
     override fun getColor(): Color {
         return Color(0xffEEC7FF)
+    }
+
+    @Composable
+    override fun getIcon(): ImageVector {
+        return Icons.Default.EmojiEmotions
     }
 }

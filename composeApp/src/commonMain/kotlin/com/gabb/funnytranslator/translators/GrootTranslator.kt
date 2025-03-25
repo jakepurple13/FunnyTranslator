@@ -1,7 +1,10 @@
 package com.gabb.funnytranslator.translators
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Park
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 
 data object GrootTranslator : Translator {
 
@@ -22,5 +25,10 @@ data object GrootTranslator : Translator {
     @Composable
     override fun getColor(): Color {
         return Color(0xff397E00)
+    }
+
+    @Composable
+    override fun getIcon(): ImageVector {
+        return Icons.Default.Park
     }
 }

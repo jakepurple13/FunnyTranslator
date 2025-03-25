@@ -1,7 +1,10 @@
 package com.gabb.funnytranslator.translators
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Code
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 
 data object LeetSpeak : Translator {
     override fun translate(text: String): String {
@@ -29,5 +32,10 @@ data object LeetSpeak : Translator {
     @Composable
     override fun getColor(): Color {
         return Color(0xff73FF00)
+    }
+
+    @Composable
+    override fun getIcon(): ImageVector {
+        return Icons.Default.Code
     }
 }

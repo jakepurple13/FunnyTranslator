@@ -1,7 +1,10 @@
 package com.gabb.funnytranslator.translators
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Sick
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import kotlin.random.Random
 
 data object ZombieTranslator : Translator {
@@ -148,4 +151,9 @@ data object ZombieTranslator : Translator {
 
     @Composable
     override fun getColor(): Color = Color(0xff4CAF50) // Zombie green
+
+    @Composable
+    override fun getIcon(): ImageVector {
+        return Icons.Default.Sick
+    }
 }

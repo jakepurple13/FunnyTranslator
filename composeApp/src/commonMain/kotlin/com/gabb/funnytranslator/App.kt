@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ListAlt
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -149,23 +148,6 @@ private fun TranslatedContent(
                         modifier = Modifier.verticalScroll(rememberScrollState()),
                     ) {
                         translatorViewModel.translatorList.forEach { translator ->
-                            val translatorName = translator.toString()
-                            val icon = when (translator) {
-                                is CatTranslator, is DogTranslator -> Icons.Default.Pets
-                                is YodaTranslator -> Icons.Default.RocketLaunch
-                                is ShakespeareTranslator -> Icons.Default.HistoryEdu
-                                is MorseCode -> Icons.AutoMirrored.Filled.ListAlt
-                                is LeetSpeak -> Icons.Default.Code
-                                is Pirate -> Icons.Default.Sailing
-                                is ValleyGirlTranslator -> Icons.Default.LocalFlorist
-                                is GrootTranslator -> Icons.Default.Park
-                                is Minionese -> Icons.Default.Groups3
-                                is Uwuify -> Icons.Default.EmojiEmotions
-                                is SurferDudeTranslator -> Icons.Default.Surfing
-                                is ZombieTranslator -> Icons.Default.Sick
-                                else -> Icons.Default.CatchingPokemon
-                            }
-
                             Card(
                                 onClick = {
                                     translatorViewModel.currentTranslator = translator
@@ -173,8 +155,13 @@ private fun TranslatedContent(
                                 }
                             ) {
                                 ListItem(
-                                    headlineContent = { Text(text = translatorName) },
-                                    leadingContent = { Icon(imageVector = icon, contentDescription = null) },
+                                    headlineContent = { Text(text = translator.toString()) },
+                                    leadingContent = {
+                                        Icon(
+                                            imageVector = translator.getIcon(),
+                                            contentDescription = null
+                                        )
+                                    },
                                     trailingContent = {
                                         if (translator == translatorViewModel.currentTranslator) {
                                             Icon(imageVector = Icons.Default.Check, contentDescription = null)

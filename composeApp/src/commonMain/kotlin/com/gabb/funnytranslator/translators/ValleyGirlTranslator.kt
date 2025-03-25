@@ -1,7 +1,10 @@
 package com.gabb.funnytranslator.translators
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.LocalFlorist
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import kotlin.random.Random
 
 data object ValleyGirlTranslator : Translator {
@@ -65,7 +68,7 @@ data object ValleyGirlTranslator : Translator {
             valleyGirlify(sentence)
         }
     }
-    
+
     private fun valleyGirlify(sentence: String): String {
         var result = sentence.trim()
 
@@ -98,5 +101,10 @@ data object ValleyGirlTranslator : Translator {
     @Composable
     override fun getColor(): Color {
         return Color(0xffFF26CC)
+    }
+
+    @Composable
+    override fun getIcon(): ImageVector {
+        return Icons.Default.LocalFlorist
     }
 }

@@ -1,7 +1,10 @@
 package com.gabb.funnytranslator.translators
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.HistoryEdu
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 
 data object ShakespeareTranslator : Translator {
 
@@ -79,5 +82,10 @@ data object ShakespeareTranslator : Translator {
     @Composable
     override fun getColor(): Color {
         return Color(0xff023094)
+    }
+
+    @Composable
+    override fun getIcon(): ImageVector {
+        return Icons.Default.HistoryEdu
     }
 }

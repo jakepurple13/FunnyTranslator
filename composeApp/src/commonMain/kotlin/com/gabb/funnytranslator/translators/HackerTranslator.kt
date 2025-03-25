@@ -1,7 +1,10 @@
 package com.gabb.funnytranslator.translators
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Code
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import kotlin.random.Random
 
 data object HackerTranslator : Translator {
@@ -148,4 +151,7 @@ data object HackerTranslator : Translator {
 
     @Composable
     override fun getColor(): Color = Color(0xFF00FF00) // Matrix green
+
+    @Composable
+    override fun getIcon(): ImageVector = Icons.Default.Code
 }

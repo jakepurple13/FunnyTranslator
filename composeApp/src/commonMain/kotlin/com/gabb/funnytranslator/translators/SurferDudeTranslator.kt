@@ -1,7 +1,10 @@
 package com.gabb.funnytranslator.translators
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Surfing
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import kotlin.random.Random
 
 data object SurferDudeTranslator : Translator {
@@ -105,5 +108,10 @@ data object SurferDudeTranslator : Translator {
     @Composable
     override fun getColor(): Color {
         return Color(0xff31FFF5) // Deep Sky Blue, representing ocean
+    }
+
+    @Composable
+    override fun getIcon(): ImageVector {
+        return Icons.Default.Surfing
     }
 }
