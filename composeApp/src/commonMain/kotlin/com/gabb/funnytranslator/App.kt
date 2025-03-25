@@ -162,6 +162,7 @@ private fun TranslatedContent(
                                 is Minionese -> Icons.Default.Groups3
                                 is Uwuify -> Icons.Default.EmojiEmotions
                                 is SurferDudeTranslator -> Icons.Default.Surfing
+                                is ZombieTranslator -> Icons.Default.Sick
                                 else -> Icons.Default.CatchingPokemon
                             }
 
