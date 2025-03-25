@@ -23,6 +23,9 @@ a pirate, or even a cat, Funny Translator has got you covered!
 - **Minionese**: Translates text into Minion language
 - **Shakespeare**: Transforms text into Shakespearean English
 - **Valley Girl**: Like, totally transforms your text into valley girl speak!
+- **Surfer Dude**: Transforms your text into radical surfer dude speak, bro!
+- **Yoda**: Transforms your text, into Yoda's speech pattern it does
+- **Zombie**: Urrrgh... transforms your text into zombie speak... braaains
 
 ## Supported Platforms
 
@@ -81,6 +84,9 @@ a pirate, or even a cat, Funny Translator has got you covered!
 - **Material 3**: For modern design components
 - **Kotlin Coroutines**: For asynchronous programming
 - **Kotlin Serialization**: For JSON serialization/deserialization
+- **Compose Hot Reload**: For faster development with hot reloading
+- **AndroidX Lifecycle**: For managing UI-related data and lifecycle-aware components
+- **Material Kolor**: For Material color utilities
 
 ## Project Structure
 
