@@ -1,25 +1,27 @@
 package com.gabb.funnytranslator
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.CopyAll
+import androidx.compose.material.icons.filled.SwapVert
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.gabb.funnytranslator.translators.*
 import com.materialkolor.PaletteStyle
+import com.materialkolor.ktx.animateColorScheme
 import com.materialkolor.rememberDynamicColorScheme
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -31,15 +33,18 @@ fun App(
     translatorViewModel: TranslatorViewModel = viewModel { TranslatorViewModel(initialText) },
 ) {
     MaterialTheme(
-        when (val translator = translatorViewModel.currentTranslator) {
-            null -> getColorScheme()
-            else -> rememberDynamicColorScheme(
-                primary = translator.getColor(),
-                isDark = isSystemInDarkTheme(),
-                isAmoled = false,
-                style = PaletteStyle.Fidelity
-            )
-        }.animate()
+        animateColorScheme(
+            when (val translator = translatorViewModel.currentTranslator) {
+                null -> getColorScheme()
+                else -> rememberDynamicColorScheme(
+                    primary = translator.getColor(),
+                    isDark = isSystemInDarkTheme(),
+                    isAmoled = false,
+                    style = PaletteStyle.Fidelity
+                )
+            },
+            tween(durationMillis = 500)
+        )
     ) {
         TranslatorContent(
             translatorViewModel = translatorViewModel
@@ -205,37 +210,3 @@ private fun TranslatedContent(
         )
     }
 }
-
-@Composable
-fun Color.animate(label: String = "") = animateColorAsState(this, label = label)
-
-@Composable
-private fun ColorScheme.animate() = copy(
-    primary.animate().value,
-    onPrimary.animate().value,
-    primaryContainer.animate().value,
-    onPrimaryContainer.animate().value,
-    inversePrimary.animate().value,
-    secondary.animate().value,
-    onSecondary.animate().value,
-    secondaryContainer.animate().value,
-    onSecondaryContainer.animate().value,
-    tertiary.animate().value,
-    onTertiary.animate().value,
-    tertiaryContainer.animate().value,
-    onTertiaryContainer.animate().value,
-    background.animate().value,
-    onBackground.animate().value,
-    surface.animate().value,
-    onSurface.animate().value,
-    surfaceVariant.animate().value,
-    onSurfaceVariant.animate().value,
-    surfaceTint.animate().value,
-    inverseSurface.animate().value,
-    inverseOnSurface.animate().value,
-    error.animate().value,
-    onError.animate().value,
-    errorContainer.animate().value,
-    onErrorContainer.animate().value,
-    outline.animate().value,
-)

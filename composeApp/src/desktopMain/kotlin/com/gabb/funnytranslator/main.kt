@@ -1,5 +1,6 @@
 package com.gabb.funnytranslator
 
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.materialkolor.PaletteStyle
+import com.materialkolor.ktx.animateColorScheme
 import com.materialkolor.rememberDynamicColorScheme
 import org.jetbrains.compose.reload.DevelopmentEntryPoint
 import java.awt.Cursor
@@ -37,15 +39,18 @@ fun main() = application {
         DevelopmentEntryPoint {
             val translatorViewModel = viewModel { TranslatorViewModel("") }
             MaterialTheme(
-                when (val translator = translatorViewModel.currentTranslator) {
-                    null -> getColorScheme()
-                    else -> rememberDynamicColorScheme(
-                        primary = translator.getColor(),
-                        isDark = isSystemInDarkTheme(),
-                        isAmoled = false,
-                        style = PaletteStyle.Fidelity
-                    )
-                }
+                animateColorScheme(
+                    when (val translator = translatorViewModel.currentTranslator) {
+                        null -> getColorScheme()
+                        else -> rememberDynamicColorScheme(
+                            primary = translator.getColor(),
+                            isDark = isSystemInDarkTheme(),
+                            isAmoled = false,
+                            style = PaletteStyle.Fidelity
+                        )
+                    },
+                    tween(durationMillis = 500)
+                )
             ) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
