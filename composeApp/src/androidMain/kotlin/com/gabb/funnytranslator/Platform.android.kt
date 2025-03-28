@@ -7,22 +7,32 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material3.ColorScheme
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
-import androidx.compose.material3.lightColorScheme
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
+/**
+ * Android implementation of the Platform interface.
+ * Provides platform-specific information for the Android platform.
+ */
 class AndroidPlatform : Platform {
     override val name: String = "Android ${Build.VERSION.SDK_INT}"
 }
 
+/**
+ * Returns the platform-specific implementation for the Android platform.
+ *
+ * @return A Platform instance for the Android platform
+ */
 actual fun getPlatform(): Platform = AndroidPlatform()
 
+/**
+ * Returns the color scheme to use for the UI based on the system theme.
+ * Uses dynamic color scheme on Android S and above, falling back to
+ * standard Material color schemes on older versions.
+ *
+ * @return A ColorScheme instance based on the system theme and Android version
+ */
 @Composable
 actual fun getColorScheme(): ColorScheme {
     val darkTheme = isSystemInDarkTheme()
@@ -37,10 +47,17 @@ actual fun getColorScheme(): ColorScheme {
     }
 }
 
+/**
+ * Provides a share button for the Android platform.
+ * Uses Android's native sharing functionality via Intent.ACTION_SEND.
+ *
+ * @param translatedText A function that returns the text to be shared
+ */
 @Composable
 actual fun ShareButton(
     translatedText: () -> String
 ) {
+    val context = LocalContext.current
     val shareItem = rememberLauncherForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) {}
@@ -48,16 +65,19 @@ actual fun ShareButton(
     IconButton(
         onClick = {
             runCatching {
-                shareItem.launch(
-                    Intent.createChooser(
-                        Intent(Intent.ACTION_SEND).apply {
-                            type = "text/plain"
-                            putExtra(Intent.EXTRA_TEXT, translatedText())
-                        },
-                        "Share translated text to..."
+                val text = translatedText()
+                if (text.isNotBlank()) {
+                    shareItem.launch(
+                        Intent.createChooser(
+                            Intent(Intent.ACTION_SEND).apply {
+                                type = "text/plain"
+                                putExtra(Intent.EXTRA_TEXT, text)
+                            },
+                            "Share translated text to..."
+                        )
                     )
-                )
+                }
             }
         }
-    ) { Icon(Icons.Default.Share, null) }
+    ) { Icon(Icons.Default.Share, contentDescription = "Share translation") }
 }

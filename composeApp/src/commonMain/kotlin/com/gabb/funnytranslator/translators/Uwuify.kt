@@ -7,133 +7,188 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import kotlin.random.Random
 
-private const val stutterChance = 20
-private const val emojiChance = 50
-
+/**
+ * Translator that converts text into "uwu" speak, a cute and playful internet language.
+ * Features include word replacements, character substitutions, stuttering, and emoji additions.
+ */
 data object Uwuify : Translator {
-    override fun translate(text: String): String {
-        return uwuify(text)
-    }
+    // Chance constants
+    private const val STUTTER_CHANCE = 20
+    private const val EMOJI_CHANCE = 50
 
+    /**
+     * Word replacements for uwu-ification
+     */
+    private val WORDS = mapOf(
+        "small" to "smol",
+        "cute" to "kawaii~",
+        "fluff" to "floof",
+        "love" to "luv",
+        "stupid" to "baka",
+        "what" to "nani",
+        "meow" to "nya~",
+    )
+
+    /**
+     * Emojis to add to the text
+     */
+    private val EMOJIS = listOf(
+        " rawr x3", " OwO", " UwU", " o.O", " -.-", " >w<",
+        " (⑅˘꒳˘)", " (ꈍᴗꈍ)", " (˘ω˘)", " (U ᵕ U❁)",
+        " σωσ", " òωó", " (U ﹏ U)", " ʘwʘ", " :3",
+        " XD", " nyaa~~", " mya", " >_<", " rawr",
+        " ^^", " (^•ω•^)", " (✿oωo)", " („ᵕᴗᵕ„)", " (。U⁄ ⁄ω⁄ ⁄ U。)"
+    )
+
+    /**
+     * Punctuation characters that can be followed by emojis
+     */
+    private val PUNCTUATION = listOf(',', '.', '!', '?')
+
+    override fun translate(text: String): String = uwuify(text)
+
+    /**
+     * Converts normal text into uwu speak
+     *
+     * @param input The text to convert
+     * @return The uwu-ified text
+     */
     private fun uwuify(input: String): String {
         var output = input
 
-        // replace some words
-        var find = output.findAnyOf(words.keys, ignoreCase = true)
+        output = replaceWords(output)
+        output = nyaify(output)
+        output = replaceLetters(output)
+        output = addStutters(output)
+        output = addEmojis(output)
+
+        return output
+    }
+
+    /**
+     * Replaces specific words with their uwu equivalents
+     */
+    private fun replaceWords(text: String): String {
+        var output = text
+        var find = output.findAnyOf(WORDS.keys, ignoreCase = true)
+
         while (find != null) {
-            val word =
-                output.substring(find.first, find.first + find.second.length) // because find.second is always lowercase
+            val word = output.substring(find.first, find.first + find.second.length)
+            var replace = WORDS[find.second]!!
 
-            var replace = words[find.second]!!
-
-            if (!word.toCharArray().any { it.isLowerCase() }) // all caps
+            // Preserve capitalization
+            if (!word.toCharArray().any { it.isLowerCase() }) {
+                // All caps
                 replace = replace.uppercase()
-            else if (word[0].isUpperCase()) // first char is uppercase
-                replace =
-                    replace.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() } // capitalize
+            } else if (word[0].isUpperCase()) {
+                // First char is uppercase
+                replace = replace.replaceFirstChar {
+                    if (it.isLowerCase()) it.titlecase() else it.toString()
+                }
+            }
 
             output = output.replace(word, replace)
-
-            find = output.findAnyOf(words.keys, ignoreCase = true)
+            find = output.findAnyOf(WORDS.keys, ignoreCase = true)
         }
 
-        // nya-ify
+        return output
+    }
+
+    /**
+     * Replaces "na" with "nya" in various capitalizations
+     */
+    private fun nyaify(text: String): String {
+        var output = text
         output = output.replace("na", "nya")
         output = output.replace("Na", "Nya")
         output = output.replace("nA", "nyA")
         output = output.replace("NA", "NYA")
+        return output
+    }
 
-        // replace l and r with w
+    /**
+     * Replaces 'l' and 'r' with 'w'
+     */
+    private fun replaceLetters(text: String): String {
+        var output = text
         output = output.replace('l', 'w')
         output = output.replace('r', 'w')
         output = output.replace('L', 'W')
         output = output.replace('R', 'W')
+        return output
+    }
 
-        // stutter sometimes
+    /**
+     * Adds stutters to some words
+     */
+    private fun addStutters(text: String): String {
+        var output = text
         var offset = 0
+
         for (s in output.split(" ")) {
-            if (s.length > 1 && randomWithChance(stutterChance)) {
+            if (s.length > 1 && randomWithChance(STUTTER_CHANCE)) {
                 output = output.prefixWord(s, "${s[0]}-", offset)
             }
-            offset += s.length
+            offset += s.length + 1 // +1 for the space
         }
 
-        // add a text emoji at the end sometimes
-        if (!punctuation.contains(output.last()) && randomWithChance(emojiChance)) {
-            output += emojis[Random.nextInt(0, emojis.size - 1)]
+        return output
+    }
+
+    /**
+     * Adds emojis to the text
+     */
+    private fun addEmojis(text: String): String {
+        var output = text
+
+        // Add emoji at the end if there's no punctuation
+        if (output.isNotEmpty() && !PUNCTUATION.contains(output.last()) && randomWithChance(EMOJI_CHANCE)) {
+            output += EMOJIS.random()
         }
 
-        // add a text emoji after punctuation sometimes
+        // Add emojis after punctuation
         val array = output.toCharArray()
         for ((eOffset, char) in array.withIndex()) {
             val index = array.indexOf(char)
-            if (punctuation.contains(char) && (index == array.size - 1 || array[index + 1] == ' ') // ', ' or '! ' etc or last character of the input because I don't want emojis in text.like.this
-                && randomWithChance(emojiChance)
+            if (PUNCTUATION.contains(char) &&
+                (index == array.size - 1 || array[index + 1] == ' ') &&
+                randomWithChance(EMOJI_CHANCE)
             ) {
-                output = output.suffixChar(char, emojis[Random.nextInt(0, emojis.size - 1)], eOffset)
+                output = output.suffixChar(char, EMOJIS.random(), eOffset)
             }
         }
 
         return output
     }
 
-    private fun String.prefixWord(word: String, prefix: String, startIndex: Int = 0) =
-        substring(0, indexOf(word, startIndex)) + prefix + substring(indexOf(word, startIndex))
+    /**
+     * Adds a prefix before a word in a string
+     */
+    private fun String.prefixWord(word: String, prefix: String, startIndex: Int = 0): String {
+        val wordIndex = indexOf(word, startIndex)
+        if (wordIndex == -1) return this
+        return substring(0, wordIndex) + prefix + substring(wordIndex)
+    }
 
-    private fun String.suffixChar(char: Char, suffix: String, startIndex: Int = 0) =
-        substring(0, indexOf(char, startIndex) + 1) + suffix + substring(indexOf(char, startIndex) + 1)
+    /**
+     * Adds a suffix after a character in a string
+     */
+    private fun String.suffixChar(char: Char, suffix: String, startIndex: Int = 0): String {
+        val charIndex = indexOf(char, startIndex)
+        if (charIndex == -1) return this
+        return substring(0, charIndex + 1) + suffix + substring(charIndex + 1)
+    }
 
+    /**
+     * Returns true with the given percentage chance
+     */
     private fun randomWithChance(chance: Int): Boolean = Random.nextInt(1, 101) <= chance
-
-    private val words = mapOf(
-        Pair("small", "smol"),
-        Pair("cute", "kawaii~"),
-        Pair("fluff", "floof"),
-        Pair("love", "luv"),
-        Pair("stupid", "baka"),
-        Pair("what", "nani"),
-        Pair("meow", "nya~"),
-    )
-
-    private val emojis = listOf(
-        " rawr x3",
-        " OwO",
-        " UwU",
-        " o.O",
-        " -.-",
-        " >w<",
-        " (⑅˘꒳˘)",
-        " (ꈍᴗꈍ)",
-        " (˘ω˘)",
-        " (U ᵕ U❁)",
-        " σωσ",
-        " òωó",
-        " (U ﹏ U)",
-        " ʘwʘ",
-        " :3",
-        " XD",
-        " nyaa~~",
-        " mya",
-        " >_<",
-        " rawr",
-        " ^^",
-        " (^•ω•^)",
-        " (✿oωo)",
-        " („ᵕᴗᵕ„)",
-        " (。U⁄ ⁄ω⁄ ⁄ U。)"
-    )
-
-    private val punctuation = listOf(',', '.', '!', '?')
 
     override fun toString(): String = "Uwu Translator"
 
     @Composable
-    override fun getColor(): Color {
-        return Color(0xffEEC7FF)
-    }
+    override fun getColor(): Color = Color(0xffEEC7FF)
 
     @Composable
-    override fun getIcon(): ImageVector {
-        return Icons.Default.EmojiEmotions
-    }
+    override fun getIcon(): ImageVector = Icons.Default.EmojiEmotions
 }

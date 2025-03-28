@@ -26,6 +26,24 @@ import com.materialkolor.rememberDynamicColorScheme
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
+/**
+ * Constants used throughout the UI
+ */
+private object AppConstants {
+    const val APP_TITLE = "Funny Translator"
+    const val TEXT_FIELD_LABEL = "Text to translate"
+    const val COPIED_MESSAGE = "Copied to clipboard"
+    const val ANIMATION_DURATION = 500
+    val DEFAULT_PADDING = 16.dp
+}
+
+/**
+ * Main app composable that sets up the theme and content.
+ * The theme color is dynamically based on the selected translator.
+ *
+ * @param initialText Initial text to be translated
+ * @param translatorViewModel ViewModel that manages the translator state
+ */
 @Composable
 @Preview
 fun App(
@@ -43,7 +61,7 @@ fun App(
                     style = PaletteStyle.Fidelity
                 )
             },
-            tween(durationMillis = 500)
+            tween(durationMillis = AppConstants.ANIMATION_DURATION)
         )
     ) {
         TranslatorContent(
@@ -52,6 +70,12 @@ fun App(
     }
 }
 
+/**
+ * Main content of the translator app.
+ * Contains the input field, translator selection, and translated output.
+ *
+ * @param translatorViewModel ViewModel that manages the translator state
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TranslatorContent(
@@ -64,7 +88,7 @@ fun TranslatorContent(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Funny Translator") },
+                title = { Text(AppConstants.APP_TITLE) },
             )
         },
         snackbarHost = { SnackbarHost(snackbarHostState) }
@@ -79,7 +103,7 @@ fun TranslatorContent(
             OutlinedTextField(
                 value = translatorViewModel.text,
                 onValueChange = { translatorViewModel.text = it },
-                label = { Text("Text to translate") },
+                label = { Text(AppConstants.TEXT_FIELD_LABEL) },
                 shape = MaterialTheme.shapes.medium,
                 trailingIcon = {
                     AnimatedVisibility(
@@ -87,16 +111,16 @@ fun TranslatorContent(
                     ) {
                         IconButton(
                             onClick = { translatorViewModel.text = "" },
-                        ) { Icon(Icons.Default.Clear, null) }
+                        ) { Icon(Icons.Default.Clear, contentDescription = "Clear text") }
                     }
                 },
                 modifier = Modifier
-                    .padding(16.dp)
+                    .padding(AppConstants.DEFAULT_PADDING)
                     .background(
                         color = MaterialTheme.colorScheme.surfaceContainer,
                         shape = MaterialTheme.shapes.medium
                     )
-                    .padding(16.dp)
+                    .padding(AppConstants.DEFAULT_PADDING)
                     .fillMaxWidth()
             )
 
@@ -105,7 +129,7 @@ fun TranslatorContent(
                 onCopy = {
                     scope.launch {
                         clipboard.setText(AnnotatedString(translatorViewModel.translatedText))
-                        snackbarHostState.showSnackbar("Copied to clipboard")
+                        snackbarHostState.showSnackbar(AppConstants.COPIED_MESSAGE)
                     }
                 }
             )
@@ -119,6 +143,12 @@ fun TranslatorContent(
     }
 }
 
+/**
+ * Displays the translated text and provides controls for selecting translators and copying text.
+ *
+ * @param translatorViewModel ViewModel that manages the translator state
+ * @param onCopy Callback for when the user wants to copy the translated text
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TranslatedContent(
@@ -128,14 +158,14 @@ private fun TranslatedContent(
     Card(
         onClick = onCopy,
         enabled = translatorViewModel.text.isNotBlank() && translatorViewModel.currentTranslator != null,
-        modifier = Modifier.padding(16.dp)
+        modifier = Modifier.padding(AppConstants.DEFAULT_PADDING)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(AppConstants.DEFAULT_PADDING)
         ) {
             var showTranslatorDialog by remember { mutableStateOf(false) }
 
@@ -164,12 +194,15 @@ private fun TranslatedContent(
                                     leadingContent = {
                                         Icon(
                                             imageVector = translator.getIcon(),
-                                            contentDescription = null
+                                            contentDescription = "Translator icon"
                                         )
                                     },
                                     trailingContent = {
                                         if (translator == translatorViewModel.currentTranslator) {
-                                            Icon(imageVector = Icons.Default.Check, contentDescription = null)
+                                            Icon(
+                                                imageVector = Icons.Default.Check,
+                                                contentDescription = "Selected translator"
+                                            )
                                         }
                                     }
                                 )
@@ -185,7 +218,7 @@ private fun TranslatedContent(
                 IconButton(
                     onClick = { translatorViewModel.text = translatorViewModel.translatedText },
                     enabled = translatorViewModel.text.isNotBlank() && translatorViewModel.currentTranslator != null,
-                ) { Icon(Icons.Default.SwapVert, null) }
+                ) { Icon(Icons.Default.SwapVert, contentDescription = "Use translation as input") }
 
                 ShareButton(
                     translatedText = translatorViewModel::translatedText,
@@ -193,19 +226,19 @@ private fun TranslatedContent(
                 IconButton(
                     onClick = onCopy,
                     enabled = translatorViewModel.text.isNotBlank() && translatorViewModel.currentTranslator != null,
-                ) { Icon(Icons.Default.CopyAll, contentDescription = "Copy") }
+                ) { Icon(Icons.Default.CopyAll, contentDescription = "Copy translation") }
             }
         }
 
         Text(
             translatorViewModel.translatedText,
             modifier = Modifier
-                .padding(16.dp)
+                .padding(AppConstants.DEFAULT_PADDING)
                 .background(
                     color = MaterialTheme.colorScheme.surfaceContainer,
                     shape = MaterialTheme.shapes.medium
                 )
-                .padding(16.dp)
+                .padding(AppConstants.DEFAULT_PADDING)
                 .fillMaxWidth()
         )
     }

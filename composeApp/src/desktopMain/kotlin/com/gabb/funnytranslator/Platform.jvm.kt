@@ -7,12 +7,27 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
+/**
+ * Desktop implementation of the Platform interface.
+ * Provides platform-specific information for the JVM platform.
+ */
 class JVMPlatform : Platform {
     override val name: String = "Desktop Java ${System.getProperty("java.version")}"
 }
 
+/**
+ * Returns the platform-specific implementation for the JVM platform.
+ *
+ * @return A Platform instance for the JVM platform
+ */
 actual fun getPlatform(): Platform = JVMPlatform()
 
+/**
+ * Returns the color scheme to use for the UI based on the system theme.
+ * Provides a detailed color scheme for both light and dark themes.
+ *
+ * @return A ColorScheme instance based on the system theme
+ */
 @Composable
 actual fun getColorScheme(): ColorScheme {
     return if (isSystemInDarkTheme()) {
@@ -80,6 +95,13 @@ actual fun getColorScheme(): ColorScheme {
     }
 }
 
+/**
+ * Provides a share button for the desktop platform.
+ * Since desktop doesn't have a native share functionality like mobile platforms,
+ * this implementation copies the text to the clipboard.
+ *
+ * @param translatedText A function that returns the text to be shared
+ */
 @Composable
 actual fun ShareButton(translatedText: () -> String) {
 

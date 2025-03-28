@@ -6,36 +6,34 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 
+/**
+ * Translator that converts text into "leet speak" (1337 5p34k).
+ * Replaces certain letters with numbers or symbols that resemble them.
+ */
 data object LeetSpeak : Translator {
+    /**
+     * Map of characters to their leet speak equivalents
+     */
+    private val LEET_MAP = mapOf(
+        'a' to '4', 'b' to '8', 'e' to '3', 'i' to '1',
+        'o' to '0', 's' to '5', 't' to '7', 'l' to '1'
+    )
+
+    /**
+     * Translates normal text to leet speak
+     *
+     * @param text The text to translate
+     * @return The text converted to leet speak
+     */
     override fun translate(text: String): String {
-        return translateToLeet(text)
-    }
-
-    fun translateToLeet(text: String): String {
-        val leetMap = mapOf(
-            'a' to '4', 'b' to '8', 'e' to '3', 'i' to '1',
-            'o' to '0', 's' to '5', 't' to '7', 'l' to '1'
-        )
-        return text.lowercase().map { leetMap[it] ?: it }.joinToString("")
-    }
-
-    fun translateFromLeet(text: String): String {
-        val reverseLeetMap = mapOf(
-            '4' to 'a', '8' to 'b', '3' to 'e', '1' to 'i',
-            '0' to 'o', '5' to 's', '7' to 't'
-        )
-        return text.lowercase().map { reverseLeetMap[it] ?: it }.joinToString("")
+        return text.lowercase().map { LEET_MAP[it] ?: it }.joinToString("")
     }
 
     override fun toString(): String = "LeetSpeak Translator"
 
     @Composable
-    override fun getColor(): Color {
-        return Color(0xff73FF00)
-    }
+    override fun getColor(): Color = Color(0xff73FF00)
 
     @Composable
-    override fun getIcon(): ImageVector {
-        return Icons.Default.Code
-    }
+    override fun getIcon(): ImageVector = Icons.Default.Code
 }

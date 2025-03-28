@@ -7,32 +7,32 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 
 /**
- * Translator that converts text into cat sounds.
- * Replaces each word with either "Meow" or "Nya" randomly.
+ * Translator that converts text into dog sounds.
+ * Replaces each word with either "Woof" or "Bark" randomly.
  */
-data object CatTranslator : Translator {
+data object DogTranslator : Translator {
     /**
-     * The possible cat sounds to use in translation
+     * The possible dog sounds to use in translation
      */
-    private val CAT_SOUNDS = listOf("Meow", "Nya")
+    private val DOG_SOUNDS = listOf("Woof", "Bark")
 
     /**
-     * Translates text into cat sounds
+     * Translates text into dog sounds
      *
      * @param text The text to translate
-     * @return A string of cat sounds, one for each word in the input
+     * @return A string of dog sounds, one for each word in the input
      */
     override fun translate(text: String): String {
         return text
             .split(" ")
-            .joinToString(" ") { CAT_SOUNDS.random() }
+            .joinToString(" ") { DOG_SOUNDS.random() }
     }
 
     @Composable
-    override fun getColor(): Color = Color(0xFFFF9D00)
+    override fun getColor(): Color = Color(0xFF9D5100)
 
     @Composable
     override fun getIcon(): ImageVector = Icons.Default.Pets
 
-    override fun toString(): String = "Cat Translator"
+    override fun toString(): String = "Dog Translator"
 }
