@@ -1,7 +1,7 @@
 include:
   - project: 'gabbwireless/infrastructure/pipeline-components'
     file:
-      - 'components/android/android-wearables-dev-pipeline-auto-versioning.yml'
+      - 'components/android/android-handheld-dev-pipeline-auto-versioning.yml'
 
 build-debug-auto-versioning:
   variables:
