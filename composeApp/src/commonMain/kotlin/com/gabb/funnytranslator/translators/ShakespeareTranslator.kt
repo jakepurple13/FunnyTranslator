@@ -348,7 +348,6 @@ data object ShakespeareTranslator : Translator {
 
     private fun shakespearify(sentence: String): String {
         var result = sentence.trim()
-
         // Apply verb conjugations
         verbConjugations.forEach { (pattern, replacement) ->
             result = result.replace(pattern, replacement)
