@@ -1,7 +1,6 @@
 package com.gabb.funnytranslator
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -151,33 +150,39 @@ fun TranslatorContent(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            AnimatedContent(translatorViewModel.currentTranslator) { target ->
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    if (target != null) {
-                        val lottie by rememberLottieComposition(target) {
-                            LottieCompositionSpec.JsonString(
-                                Res.readBytes("files/${target.lottiePath}")
-                                    .decodeToString()
+            AnimatedVisibility(
+                translatorViewModel.isTranslating,
+                enter = fadeIn() + expandIn(expandFrom = Alignment.Center),
+                exit = fadeOut() + shrinkOut(shrinkTowards = Alignment.Center),
+            ) {
+                AnimatedContent(translatorViewModel.currentTranslator) { target ->
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        if (target != null) {
+                            val lottie by rememberLottieComposition(target) {
+                                LottieCompositionSpec.JsonString(
+                                    Res.readBytes("files/${target.lottiePath}")
+                                        .decodeToString()
+                                )
+                            }
+
+                            Image(
+                                painter = rememberLottiePainter(
+                                    composition = lottie,
+                                    iterations = Compottie.IterateForever
+                                ),
+                                null,
+                                modifier = Modifier.size(200.dp)
                             )
                         }
 
-                        Image(
-                            painter = rememberLottiePainter(
-                                composition = lottie,
-                                iterations = Compottie.IterateForever
-                            ),
-                            null,
-                            modifier = Modifier.size(200.dp)
+                        Text(
+                            "Translating to ${target.toString()}...",
+                            style = MaterialTheme.typography.labelSmall
                         )
                     }
-
-                    Text(
-                        "Translating to ${target.toString()}...",
-                        style = MaterialTheme.typography.labelSmall
-                    )
                 }
             }
 

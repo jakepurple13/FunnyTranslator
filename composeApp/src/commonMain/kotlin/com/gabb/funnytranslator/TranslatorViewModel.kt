@@ -1,11 +1,12 @@
 package com.gabb.funnytranslator
 
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.gabb.funnytranslator.translators.*
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 /**
  * ViewModel that manages the state and logic for the translator application.
@@ -60,7 +61,7 @@ class TranslatorViewModel(
      * The translated text based on the current input and selected translator.
      * Updates automatically when text or currentTranslator changes.
      */
-    val translatedText by derivedStateOf {
+    /*val translatedText by derivedStateOf {
         if (text.isBlank()) {
             "No translation"
         } else {
@@ -70,6 +71,30 @@ class TranslatorViewModel(
                 "Translation error: ${e.message}"
             }
         }
+    }*/
+    var translatedText by mutableStateOf("No translation")
+        private set
+
+    var isTranslating by mutableStateOf(false)
+
+    init {
+        snapshotFlow { text }
+            .onEach { isTranslating = it.isNotBlank() }
+            .debounce(1000)
+            .onEach {
+                translatedText = if (it.isBlank()) {
+                    "No translation"
+                } else {
+                    try {
+                        translate(it) ?: "No translation"
+                    } catch (e: Exception) {
+                        "Translation error: ${e.message}"
+                    }
+                }
+
+                isTranslating = false
+            }
+            .launchIn(viewModelScope)
     }
 
     /**
