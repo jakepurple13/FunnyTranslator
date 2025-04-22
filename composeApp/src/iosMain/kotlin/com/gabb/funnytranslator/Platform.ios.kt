@@ -1,10 +1,12 @@
 package com.gabb.funnytranslator
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import platform.UIKit.UIActivityViewController
 import platform.UIKit.UIApplication
 import platform.UIKit.UIDevice
@@ -42,8 +44,12 @@ actual fun getColorScheme(): ColorScheme {
  * @param translatedText A function that returns the text to be shared
  */
 @Composable
-actual fun ShareButton(translatedText: () -> String) {
-    IconButton(
+actual fun ShareButton(
+    translatedText: () -> String,
+    enabled: Boolean,
+    modifier: Modifier,
+) {
+    /*IconButton(
         onClick = {
             runCatching {
                 val text = translatedText()
@@ -58,5 +64,34 @@ actual fun ShareButton(translatedText: () -> String) {
                 }
             }
         }
-    ) { Icon(Icons.Default.Share, contentDescription = "Share translation") }
+    ) { Icon(Icons.Default.Share, contentDescription = "Share translation") }*/
+
+    Card(
+        onClick = {
+            runCatching {
+                val text = translatedText()
+                if (text.isNotBlank()) {
+                    val currentViewController = UIApplication.sharedApplication.keyWindow?.rootViewController
+                    val activityViewController = UIActivityViewController(listOf(text), null)
+                    currentViewController?.presentViewController(
+                        viewControllerToPresent = activityViewController,
+                        animated = true,
+                        completion = null
+                    )
+                }
+            }
+        },
+        shape = MaterialTheme.shapes.medium,
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+        ),
+        enabled = enabled,
+        modifier = modifier
+    ) {
+        Icon(
+            Icons.Default.Share,
+            contentDescription = "Share translation",
+            modifier = Modifier.padding(AppConstants.DEFAULT_PADDING)
+        )
+    }
 }

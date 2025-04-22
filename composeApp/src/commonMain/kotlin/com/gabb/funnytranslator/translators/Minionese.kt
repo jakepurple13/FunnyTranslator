@@ -41,7 +41,7 @@ data object Minionese : Translator {
             }
     }
 
-    override fun toString(): String = "Minionese Translator"
+    override fun toString(): String = "Minionese"
 
     @Composable
     override fun getColor(): Color {

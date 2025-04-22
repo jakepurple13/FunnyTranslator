@@ -184,7 +184,7 @@ data object Uwuify : Translator {
      */
     private fun randomWithChance(chance: Int): Boolean = Random.nextInt(1, 101) <= chance
 
-    override fun toString(): String = "Uwu Translator"
+    override fun toString(): String = "Uwu"
 
     @Composable
     override fun getColor(): Color = Color(0xffEEC7FF)

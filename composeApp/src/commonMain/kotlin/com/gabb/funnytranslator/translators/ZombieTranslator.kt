@@ -9,6 +9,8 @@ import kotlin.random.Random
 
 data object ZombieTranslator : Translator {
 
+    override val lottiePath: String = "zombie_hand.json"
+
     private val wordReplacements = mapOf(
         "hello" to "graaah",
         "hi" to "urrrgh",
@@ -147,7 +149,7 @@ data object ZombieTranslator : Translator {
         }
     }
 
-    override fun toString(): String = "Zombie Translator"
+    override fun toString(): String = "Zombie"
 
     @Composable
     override fun getColor(): Color = Color(0xff4CAF50) // Zombie green

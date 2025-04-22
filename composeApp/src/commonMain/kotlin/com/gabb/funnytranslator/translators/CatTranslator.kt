@@ -11,6 +11,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
  * Replaces each word with either "Meow" or "Nya" randomly.
  */
 data object CatTranslator : Translator {
+
+    override val lottiePath: String = "cat.json"
+
     /**
      * The possible cat sounds to use in translation
      */
@@ -34,5 +37,5 @@ data object CatTranslator : Translator {
     @Composable
     override fun getIcon(): ImageVector = Icons.Default.Pets
 
-    override fun toString(): String = "Cat Translator"
+    override fun toString(): String = "Cat"
 }

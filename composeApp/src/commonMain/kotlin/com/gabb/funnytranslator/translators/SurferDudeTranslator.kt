@@ -9,6 +9,8 @@ import kotlin.random.Random
 
 data object SurferDudeTranslator : Translator {
 
+    override val lottiePath: String = "folder.json"
+
     private val wordReplacements = mapOf(
         "good" to "gnarly",
         "great" to "epic",
@@ -103,7 +105,7 @@ data object SurferDudeTranslator : Translator {
         return result
     }
 
-    override fun toString(): String = "Surfer Dude Translator"
+    override fun toString(): String = "Surfer Dude"
 
     @Composable
     override fun getColor(): Color {

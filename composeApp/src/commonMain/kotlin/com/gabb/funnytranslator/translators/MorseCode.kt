@@ -7,6 +7,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 
 data object MorseCode: Translator {
+
+    override val lottiePath: String = "calculator.json"
+
     override fun translate(text: String): String {
         return encode(text)
     }
@@ -82,7 +85,7 @@ data object MorseCode: Translator {
         return newMessage.replace("\\p{Mn}+".toRegex(), "")
     }
 
-    override fun toString(): String = "Morse Code Translator"
+    override fun toString(): String = "Morse Code"
 
     @Composable
     override fun getColor(): Color {

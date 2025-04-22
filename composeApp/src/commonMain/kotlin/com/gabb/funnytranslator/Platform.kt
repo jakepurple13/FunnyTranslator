@@ -2,6 +2,7 @@ package com.gabb.funnytranslator
 
 import androidx.compose.material3.ColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 
 interface Platform {
     val name: String
@@ -13,4 +14,8 @@ expect fun getPlatform(): Platform
 expect fun getColorScheme(): ColorScheme
 
 @Composable
-expect fun ShareButton(translatedText: () -> String)
+expect fun ShareButton(
+    translatedText: () -> String,
+    enabled: Boolean,
+    modifier: Modifier,
+)
