@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.compositeOver
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
@@ -208,7 +209,10 @@ private fun TranslatedContent(
     translatorViewModel: TranslatorViewModel,
     onCopy: () -> Unit,
 ) {
-    val isEnabled = translatorViewModel.text.isNotBlank() && translatorViewModel.currentTranslator != null
+    val isEnabled = translatorViewModel.text.isNotBlank()
+            && translatorViewModel.currentTranslator != null
+            && !translatorViewModel.isTranslating
+
     Column {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -272,26 +276,13 @@ private fun TranslatedContent(
                 }
             }
 
-            Card(
-                onClick = { translatorViewModel.text = translatorViewModel.translatedText.take(500) },
+            ActionButton(
                 enabled = isEnabled,
-                shape = MaterialTheme.shapes.medium,
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                    disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer
-                        .copy(alpha = 0.38f)
-                        .compositeOver(MaterialTheme.colorScheme.surface),
-                ),
+                onClick = { translatorViewModel.text = translatorViewModel.translatedText.take(500) },
+                imageVector = Icons.Default.SwapVert,
+                contentDescription = "Use translation as input",
                 modifier = Modifier.weight(.25f)
-            ) {
-                Icon(
-                    Icons.Default.SwapVert,
-                    contentDescription = "Use translation as input",
-                    modifier = Modifier
-                        .padding(AppConstants.DEFAULT_PADDING)
-                        .align(Alignment.CenterHorizontally)
-                )
-            }
+            )
 
             ShareButton(
                 translatedText = translatorViewModel::translatedText,
@@ -299,29 +290,16 @@ private fun TranslatedContent(
                 modifier = Modifier.weight(.25f)
             )
 
-            Card(
-                onClick = onCopy,
+            ActionButton(
                 enabled = isEnabled,
-                shape = MaterialTheme.shapes.medium,
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                    disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer
-                        .copy(alpha = 0.38f)
-                        .compositeOver(MaterialTheme.colorScheme.surface),
-                ),
+                onClick = onCopy,
+                imageVector = Icons.Default.CopyAll,
+                contentDescription = "Copy translation",
                 modifier = Modifier.weight(.25f)
-            ) {
-                Icon(
-                    Icons.Default.CopyAll,
-                    contentDescription = "Copy translation",
-                    modifier = Modifier
-                        .padding(AppConstants.DEFAULT_PADDING)
-                        .align(Alignment.CenterHorizontally)
-                )
-            }
+            )
         }
 
-        AnimatedVisibility(isEnabled && !translatorViewModel.isTranslating) {
+        AnimatedVisibility(isEnabled) {
             Text(
                 translatorViewModel.translatedText,
                 color = MaterialTheme.colorScheme.onSurface,
@@ -336,5 +314,35 @@ private fun TranslatedContent(
                     .fillMaxWidth()
             )
         }
+    }
+}
+
+@Composable
+fun ActionButton(
+    enabled: Boolean,
+    imageVector: ImageVector,
+    contentDescription: String,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+) {
+    Card(
+        onClick = onClick,
+        enabled = enabled,
+        shape = MaterialTheme.shapes.medium,
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+            disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer
+                .copy(alpha = 0.38f)
+                .compositeOver(MaterialTheme.colorScheme.surface),
+        ),
+        modifier = modifier
+    ) {
+        Icon(
+            imageVector = imageVector,
+            contentDescription = contentDescription,
+            modifier = Modifier
+                .padding(AppConstants.DEFAULT_PADDING)
+                .align(Alignment.CenterHorizontally)
+        )
     }
 }

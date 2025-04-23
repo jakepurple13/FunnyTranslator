@@ -1,14 +1,13 @@
 package com.gabb.funnytranslator
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material3.*
+import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.compositeOver
 import platform.UIKit.UIActivityViewController
 import platform.UIKit.UIApplication
 import platform.UIKit.UIDevice
@@ -51,24 +50,7 @@ actual fun ShareButton(
     enabled: Boolean,
     modifier: Modifier,
 ) {
-    /*IconButton(
-        onClick = {
-            runCatching {
-                val text = translatedText()
-                if (text.isNotBlank()) {
-                    val currentViewController = UIApplication.sharedApplication.keyWindow?.rootViewController
-                    val activityViewController = UIActivityViewController(listOf(text), null)
-                    currentViewController?.presentViewController(
-                        viewControllerToPresent = activityViewController,
-                        animated = true,
-                        completion = null
-                    )
-                }
-            }
-        }
-    ) { Icon(Icons.Default.Share, contentDescription = "Share translation") }*/
-
-    Card(
+    ActionButton(
         onClick = {
             runCatching {
                 val text = translatedText()
@@ -83,22 +65,9 @@ actual fun ShareButton(
                 }
             }
         },
-        shape = MaterialTheme.shapes.medium,
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer,
-            disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer
-                .copy(alpha = 0.38f)
-                .compositeOver(MaterialTheme.colorScheme.surface),
-        ),
         enabled = enabled,
+        imageVector = Icons.Default.Share,
+        contentDescription = "Share translation",
         modifier = modifier
-    ) {
-        Icon(
-            Icons.Default.Share,
-            contentDescription = "Share translation",
-            modifier = Modifier
-                .padding(AppConstants.DEFAULT_PADDING)
-                .align(Alignment.CenterHorizontally)
-        )
-    }
+    )
 }

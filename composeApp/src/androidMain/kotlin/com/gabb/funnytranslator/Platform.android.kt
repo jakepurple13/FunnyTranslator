@@ -5,14 +5,11 @@ import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.platform.LocalContext
 
 /**
@@ -63,12 +60,11 @@ actual fun ShareButton(
     enabled: Boolean,
     modifier: Modifier,
 ) {
-    val context = LocalContext.current
     val shareItem = rememberLauncherForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) {}
 
-    /*FilledTonalIconButton(
+    ActionButton(
         onClick = {
             runCatching {
                 val text = translatedText()
@@ -85,42 +81,9 @@ actual fun ShareButton(
                 }
             }
         },
-        shape = MaterialTheme.shapes.medium,
-    ) { Icon(Icons.Default.Share, contentDescription = "Share translation") }*/
-
-    Card(
-        onClick = {
-            runCatching {
-                val text = translatedText()
-                if (text.isNotBlank()) {
-                    shareItem.launch(
-                        Intent.createChooser(
-                            Intent(Intent.ACTION_SEND).apply {
-                                type = "text/plain"
-                                putExtra(Intent.EXTRA_TEXT, text)
-                            },
-                            "Share translated text to..."
-                        )
-                    )
-                }
-            }
-        },
-        shape = MaterialTheme.shapes.medium,
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer,
-            disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer
-                .copy(alpha = 0.38f)
-                .compositeOver(MaterialTheme.colorScheme.surface),
-        ),
         enabled = enabled,
+        imageVector = Icons.Default.Share,
+        contentDescription = "Share translation",
         modifier = modifier
-    ) {
-        Icon(
-            Icons.Default.Share,
-            contentDescription = "Share translation",
-            modifier = Modifier
-                .padding(AppConstants.DEFAULT_PADDING)
-                .align(Alignment.CenterHorizontally)
-        )
-    }
+    )
 }
