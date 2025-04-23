@@ -8,6 +8,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import kotlin.random.Random
 
 data object Pirate : Translator {
+
+    override val lottiePath: String = "wave.json"
+
     private val englishToPirate = mapOf(
         // Basic replacements
         "hello" to "ahoy",
