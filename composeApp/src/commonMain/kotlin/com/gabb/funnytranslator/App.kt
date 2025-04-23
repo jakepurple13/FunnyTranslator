@@ -139,6 +139,8 @@ fun TranslatorContent(
                 trailingIcon = {
                     AnimatedVisibility(
                         visible = translatorViewModel.text.isNotBlank(),
+                        enter = fadeIn() + expandIn(expandFrom = Alignment.CenterStart),
+                        exit = fadeOut() + shrinkOut(shrinkTowards = Alignment.CenterStart),
                     ) {
                         IconButton(
                             onClick = { translatorViewModel.text = "" },

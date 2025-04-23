@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.Minimize
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
@@ -54,7 +55,7 @@ fun main() = application {
             ) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background,
+                    color = MaterialTheme.colorScheme.secondaryContainer,
                     shape = MaterialTheme.shapes.medium,
                     border = BorderStroke(
                         1.dp,
@@ -67,7 +68,9 @@ fun main() = application {
                             onMinimizeClick = { windowState.isMinimized = true },
                             onCloseClick = ::exitApplication
                         )
-                        HorizontalDivider()
+                        HorizontalDivider(
+                            color = MaterialTheme.colorScheme.onSecondaryContainer
+                        )
                         App()
                     }
                 }
@@ -106,7 +109,10 @@ fun FrameWindowScope.CustomTitleBar(
                         contentDescription = "Close",
                     )
                 }
-            }
+            },
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = Color.Transparent,
+            )
         )
     }
 }
