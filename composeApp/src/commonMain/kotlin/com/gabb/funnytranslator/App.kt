@@ -191,7 +191,7 @@ fun TranslatorContent(
             Text(
                 getPlatform().name,
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.outlineVariant,
+                color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.5f),
             )
         }
     }
