@@ -9,7 +9,7 @@ import kotlin.random.Random
 
 data object SurferDudeTranslator : Translator {
 
-    override val lottiePath: String = "folder.json"
+    override val lottiePath: String = "surf.json"
 
     private val wordReplacements = mapOf(
         "good" to "gnarly",

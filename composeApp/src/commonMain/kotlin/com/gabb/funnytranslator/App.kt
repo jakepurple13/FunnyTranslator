@@ -310,7 +310,7 @@ private fun TranslatedContent(
             }
         }
 
-        AnimatedVisibility(isEnabled) {
+        AnimatedVisibility(isEnabled && !translatorViewModel.isTranslating) {
             Text(
                 translatorViewModel.translatedText,
                 color = MaterialTheme.colorScheme.onSurface,

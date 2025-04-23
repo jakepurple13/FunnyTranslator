@@ -15,6 +15,8 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 @OptIn(ExperimentalResourceApi::class, DelicateCoroutinesApi::class)
 data object Minionese : Translator {
 
+    override val lottiePath: String = "robot.json"
+
     private val words = mutableMapOf<String, String>()
 
     init {

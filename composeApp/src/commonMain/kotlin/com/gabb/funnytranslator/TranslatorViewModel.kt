@@ -4,6 +4,7 @@ import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gabb.funnytranslator.translators.*
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -78,7 +79,10 @@ class TranslatorViewModel(
     var isTranslating by mutableStateOf(false)
 
     init {
-        snapshotFlow { text }
+        combine(
+            snapshotFlow { text },
+            snapshotFlow { currentTranslator }
+        ) { text, translator -> text }
             .onEach { isTranslating = it.isNotBlank() }
             .debounce(1000)
             .onEach {
