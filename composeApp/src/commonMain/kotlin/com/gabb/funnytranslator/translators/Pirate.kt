@@ -275,7 +275,7 @@ data object Pirate : Translator {
         return result
     }
 
-    override fun toString(): String = "Pirate Translator"
+    override fun toString(): String = "Pirate"
 
     @Composable
     override fun getColor(): Color {
