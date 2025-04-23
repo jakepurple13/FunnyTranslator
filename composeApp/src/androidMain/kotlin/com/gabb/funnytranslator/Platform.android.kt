@@ -10,7 +10,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.platform.LocalContext
 
 /**
@@ -106,6 +108,9 @@ actual fun ShareButton(
         shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.secondaryContainer,
+            disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer
+                .copy(alpha = 0.38f)
+                .compositeOver(MaterialTheme.colorScheme.surface),
         ),
         enabled = enabled,
         modifier = modifier
@@ -113,7 +118,9 @@ actual fun ShareButton(
         Icon(
             Icons.Default.Share,
             contentDescription = "Share translation",
-            modifier = Modifier.padding(AppConstants.DEFAULT_PADDING)
+            modifier = Modifier
+                .padding(AppConstants.DEFAULT_PADDING)
+                .align(Alignment.CenterHorizontally)
         )
     }
 }

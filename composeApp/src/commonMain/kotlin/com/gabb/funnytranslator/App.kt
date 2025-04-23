@@ -15,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
@@ -277,13 +278,18 @@ private fun TranslatedContent(
                 shape = MaterialTheme.shapes.medium,
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer
+                        .copy(alpha = 0.38f)
+                        .compositeOver(MaterialTheme.colorScheme.surface),
                 ),
                 modifier = Modifier.weight(.25f)
             ) {
                 Icon(
                     Icons.Default.SwapVert,
                     contentDescription = "Use translation as input",
-                    modifier = Modifier.padding(AppConstants.DEFAULT_PADDING)
+                    modifier = Modifier
+                        .padding(AppConstants.DEFAULT_PADDING)
+                        .align(Alignment.CenterHorizontally)
                 )
             }
 
@@ -299,13 +305,18 @@ private fun TranslatedContent(
                 shape = MaterialTheme.shapes.medium,
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer
+                        .copy(alpha = 0.38f)
+                        .compositeOver(MaterialTheme.colorScheme.surface),
                 ),
                 modifier = Modifier.weight(.25f)
             ) {
                 Icon(
                     Icons.Default.CopyAll,
                     contentDescription = "Copy translation",
-                    modifier = Modifier.padding(AppConstants.DEFAULT_PADDING)
+                    modifier = Modifier
+                        .padding(AppConstants.DEFAULT_PADDING)
+                        .align(Alignment.CenterHorizontally)
                 )
             }
         }
@@ -315,7 +326,8 @@ private fun TranslatedContent(
                 translatorViewModel.translatedText,
                 color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier
-                    .padding(AppConstants.DEFAULT_PADDING)
+                    .padding(horizontal = AppConstants.DEFAULT_PADDING)
+                    .padding(bottom = AppConstants.DEFAULT_PADDING)
                     .background(
                         color = MaterialTheme.colorScheme.surfaceContainer,
                         shape = MaterialTheme.shapes.medium
