@@ -40,7 +40,13 @@ internal object AppConstants {
     const val APP_TITLE = "Funny Translator"
     const val TEXT_FIELD_LABEL = "Text to translate"
     const val COPIED_MESSAGE = "Copied to clipboard"
+    const val NO_TRANSLATOR_SELECTED = "No translator selected"
+    const val NO_TRANSLATION = "No translation"
+    const val TRANSLATION_ERROR_PREFIX = "Translation error: "
+    const val TRANSLATING_TO = "Translating to "
+    const val MAX_TEXT_LENGTH = 500
     const val ANIMATION_DURATION = 500
+    const val CORNER_RADIUS = 16
     val DEFAULT_PADDING = 16.dp
 }
 
@@ -79,9 +85,16 @@ fun App(
 
 /**
  * Main content of the translator app.
- * Contains the input field, translator selection, and translated output.
+ * This is the primary UI container that organizes all the app's components:
+ * - Input text field with character limit and clear button
+ * - Animation showing the current translator when translating
+ * - Bottom section with translator selection and translated output
+ * - Platform indicator at the bottom
  *
- * @param translatorViewModel ViewModel that manages the translator state
+ * The UI adapts to different states (translating, empty input, etc.) with animations
+ * and provides a cohesive user experience across all platforms.
+ *
+ * @param translatorViewModel ViewModel that manages the translator state and handles translation logic
  */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalResourceApi::class)
 @Composable
@@ -97,8 +110,8 @@ fun TranslatorContent(
         bottomBar = {
             Surface(
                 shape = RoundedCornerShape(
-                    topStart = 16.dp,
-                    topEnd = 16.dp,
+                    topStart = AppConstants.CORNER_RADIUS.dp,
+                    topEnd = AppConstants.CORNER_RADIUS.dp,
                 ),
                 color = MaterialTheme.colorScheme.primaryContainer,
                 modifier = Modifier.fillMaxWidth(),
@@ -132,10 +145,10 @@ fun TranslatorContent(
         ) {
             OutlinedTextField(
                 value = translatorViewModel.text,
-                onValueChange = { translatorViewModel.text = it.take(500) },
+                onValueChange = { translatorViewModel.text = it.take(AppConstants.MAX_TEXT_LENGTH) },
                 label = { Text(AppConstants.TEXT_FIELD_LABEL) },
                 shape = MaterialTheme.shapes.medium,
-                supportingText = { Text("${translatorViewModel.text.length}/500") },
+                supportingText = { Text("${translatorViewModel.text.length}/${AppConstants.MAX_TEXT_LENGTH}") },
                 trailingIcon = {
                     AnimatedVisibility(
                         visible = translatorViewModel.text.isNotBlank(),
@@ -144,7 +157,7 @@ fun TranslatorContent(
                     ) {
                         IconButton(
                             onClick = { translatorViewModel.text = "" },
-                        ) { Icon(Icons.Default.Clear, contentDescription = "Clear text") }
+                        ) { Icon(Icons.Default.Clear, contentDescription = "Clear input text") }
                     }
                 },
                 colors = OutlinedTextFieldDefaults.colors(
@@ -183,13 +196,15 @@ fun TranslatorContent(
                         }
 
                         Text(
-                            "Translating to ${target.toString()}...",
+                            "${AppConstants.TRANSLATING_TO}${target.toString()}...",
                             style = MaterialTheme.typography.labelSmall
                         )
                     }
                 }
             }
 
+            // Display the current platform name at the bottom of the screen
+            // This helps identify which platform the app is running on (Android, iOS, Desktop, etc.)
             Text(
                 getPlatform().name,
                 style = MaterialTheme.typography.labelSmall,
@@ -200,10 +215,16 @@ fun TranslatorContent(
 }
 
 /**
- * Displays the translated text and provides controls for selecting translators and copying text.
+ * Displays the translated text and provides controls for selecting translators and interacting with the translation.
+ * This composable includes:
+ * - A dropdown to select the translator
+ * - A button to use the translation as input (swap)
+ * - A button to share the translation (platform-specific)
+ * - A button to copy the translation to clipboard
+ * - The translated text display area
  *
- * @param translatorViewModel ViewModel that manages the translator state
- * @param onCopy Callback for when the user wants to copy the translated text
+ * @param translatorViewModel ViewModel that manages the translator state and translation logic
+ * @param onCopy Callback for when the user wants to copy the translated text to clipboard
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -211,9 +232,17 @@ private fun TranslatedContent(
     translatorViewModel: TranslatorViewModel,
     onCopy: () -> Unit,
 ) {
-    val isEnabled = translatorViewModel.text.isNotBlank()
-            && translatorViewModel.currentTranslator != null
-            && !translatorViewModel.isTranslating
+    val isEnabled by remember(
+        translatorViewModel.text,
+        translatorViewModel.currentTranslator,
+        translatorViewModel.isTranslating
+    ) {
+        derivedStateOf {
+            translatorViewModel.text.isNotBlank() &&
+                    translatorViewModel.currentTranslator != null &&
+                    !translatorViewModel.isTranslating
+        }
+    }
 
     Column {
         Row(
@@ -232,6 +261,7 @@ private fun TranslatedContent(
                 ),
                 modifier = Modifier.weight(.75f)
             ) {
+                // Display the currently selected translator or a default message
                 Text(
                     text = translatorViewModel.chosenTranslator,
                     modifier = Modifier.padding(AppConstants.DEFAULT_PADDING)
@@ -258,14 +288,14 @@ private fun TranslatedContent(
                                     leadingContent = {
                                         Icon(
                                             imageVector = translator.getIcon(),
-                                            contentDescription = "Translator icon"
+                                            contentDescription = "$translator translator icon"
                                         )
                                     },
                                     trailingContent = {
                                         if (translator == translatorViewModel.currentTranslator) {
                                             Icon(
                                                 imageVector = Icons.Default.Check,
-                                                contentDescription = "Selected translator"
+                                                contentDescription = "Currently selected translator"
                                             )
                                         }
                                     }
@@ -280,7 +310,9 @@ private fun TranslatedContent(
 
             ActionButton(
                 enabled = isEnabled,
-                onClick = { translatorViewModel.text = translatorViewModel.translatedText.take(500) },
+                onClick = {
+                    translatorViewModel.text = translatorViewModel.translatedText.take(AppConstants.MAX_TEXT_LENGTH)
+                },
                 imageVector = Icons.Default.SwapVert,
                 contentDescription = "Use translation as input",
                 modifier = Modifier.weight(.25f)
@@ -319,6 +351,16 @@ private fun TranslatedContent(
     }
 }
 
+/**
+ * A reusable button component with an icon that performs an action when clicked.
+ * The button is styled as a card with the app's secondary container color.
+ *
+ * @param enabled Whether the button is enabled and can be clicked
+ * @param imageVector The icon to display in the button
+ * @param contentDescription Accessibility description for the icon
+ * @param modifier Modifier to be applied to the button
+ * @param onClick Callback to be invoked when the button is clicked
+ */
 @Composable
 fun ActionButton(
     enabled: Boolean,

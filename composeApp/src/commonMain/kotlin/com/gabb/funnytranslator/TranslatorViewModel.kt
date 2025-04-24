@@ -73,7 +73,7 @@ class TranslatorViewModel(
             }
         }
     }*/
-    var translatedText by mutableStateOf("No translation")
+    var translatedText by mutableStateOf(AppConstants.NO_TRANSLATION)
         private set
 
     var isTranslating by mutableStateOf(false)
@@ -85,15 +85,13 @@ class TranslatorViewModel(
         ) { text, translator -> text }
             .onEach { isTranslating = it.isNotBlank() }
             .debounce(1000)
-            .onEach {
-                translatedText = if (it.isBlank()) {
-                    "No translation"
+            .onEach { input ->
+                translatedText = if (input.isBlank()) {
+                    AppConstants.NO_TRANSLATION
                 } else {
-                    try {
-                        translate(it) ?: "No translation"
-                    } catch (e: Exception) {
-                        "Translation error: ${e.message}"
-                    }
+                    runCatching { translate(input) }
+                        .recoverCatching { "${AppConstants.TRANSLATION_ERROR_PREFIX}${it.message}" }
+                        .getOrNull() ?: AppConstants.NO_TRANSLATION
                 }
 
                 isTranslating = false
