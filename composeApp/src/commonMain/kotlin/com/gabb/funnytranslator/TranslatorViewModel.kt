@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlin.random.Random
 
 /**
  * ViewModel that manages the state and logic for the translator application.
@@ -84,7 +85,7 @@ class TranslatorViewModel(
             snapshotFlow { currentTranslator }
         ) { text, translator -> text }
             .onEach { isTranslating = it.isNotBlank() }
-            .debounce(1000)
+            .debounce { Random.nextLong(1000, 1500) }
             .onEach { input ->
                 translatedText = if (input.isBlank()) {
                     AppConstants.NO_TRANSLATION
