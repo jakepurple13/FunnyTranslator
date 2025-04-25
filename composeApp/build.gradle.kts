@@ -4,8 +4,6 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
-import java.io.FileInputStream
-import java.util.*
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -97,33 +95,6 @@ android {
         versionName = "1.0.0"
     }
 
-    val properties = Properties()
-    val gitlabPropertiesFile = rootProject.file(".secure_files/gabb_keystore.properties")
-
-    val keystorePassword: String
-    val keystoreAlias: String
-    val keystoreFile: File
-
-    if (gitlabPropertiesFile.exists()) {
-        properties.load(FileInputStream(gitlabPropertiesFile))
-        keystorePassword = properties.getProperty("KEYSTORE_PASSWORD")
-        keystoreAlias = properties.getProperty("KEYSTORE_ALIAS")
-        keystoreFile = rootProject.file(".secure_files/gabb.keystore")
-    } else {
-        keystorePassword = System.getenv("KEYSTORE_PASSWORD")
-        keystoreAlias = System.getenv("KEYSTORE_ALIAS")
-        keystoreFile = file(System.getenv("KEYSTORE_PATH"))
-    }
-
-    signingConfigs {
-        create("release") {
-            storeFile = keystoreFile
-            storePassword = keystorePassword
-            keyAlias = keystoreAlias
-            keyPassword = keystorePassword
-        }
-    }
-
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -132,10 +103,6 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
-
-            if (System.getenv("KEYSTORE_PATH") != null) {
-                signingConfig = signingConfigs.getByName("release")
-            }
         }
 
         create("beta") {
