@@ -9,6 +9,8 @@ import kotlin.random.Random
 
 data object ShakespeareTranslator : Translator {
 
+    override val lottiePath: String = "fencing.json"
+
     private val modernToShakespearean = mapOf(
         // Greetings and farewells
         "hello" to "hail",
@@ -348,7 +350,6 @@ data object ShakespeareTranslator : Translator {
 
     private fun shakespearify(sentence: String): String {
         var result = sentence.trim()
-
         // Apply verb conjugations
         verbConjugations.forEach { (pattern, replacement) ->
             result = result.replace(pattern, replacement)
@@ -399,7 +400,7 @@ data object ShakespeareTranslator : Translator {
         return result
     }
 
-    override fun toString(): String = "Shakespeare Translator"
+    override fun toString(): String = "Shakespeare"
 
     @Composable
     override fun getColor(): Color {

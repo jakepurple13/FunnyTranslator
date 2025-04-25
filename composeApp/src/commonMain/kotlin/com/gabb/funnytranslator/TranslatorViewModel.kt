@@ -1,11 +1,14 @@
 package com.gabb.funnytranslator
 
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.gabb.funnytranslator.translators.*
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlin.random.Random
 
 /**
  * ViewModel that manages the state and logic for the translator application.
@@ -60,7 +63,7 @@ class TranslatorViewModel(
      * The translated text based on the current input and selected translator.
      * Updates automatically when text or currentTranslator changes.
      */
-    val translatedText by derivedStateOf {
+    /*val translatedText by derivedStateOf {
         if (text.isBlank()) {
             "No translation"
         } else {
@@ -70,6 +73,31 @@ class TranslatorViewModel(
                 "Translation error: ${e.message}"
             }
         }
+    }*/
+    var translatedText by mutableStateOf(AppConstants.NO_TRANSLATION)
+        private set
+
+    var isTranslating by mutableStateOf(false)
+
+    init {
+        combine(
+            snapshotFlow { text },
+            snapshotFlow { currentTranslator }
+        ) { text, translator -> text }
+            .onEach { isTranslating = it.isNotBlank() }
+            .debounce { Random.nextLong(1000, 1500) }
+            .onEach { input ->
+                translatedText = if (input.isBlank()) {
+                    AppConstants.NO_TRANSLATION
+                } else {
+                    runCatching { translate(input) }
+                        .recoverCatching { "${AppConstants.TRANSLATION_ERROR_PREFIX}${it.message}" }
+                        .getOrNull() ?: AppConstants.NO_TRANSLATION
+                }
+
+                isTranslating = false
+            }
+            .launchIn(viewModelScope)
     }
 
     /**

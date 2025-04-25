@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 
 /**
@@ -55,14 +56,15 @@ actual fun getColorScheme(): ColorScheme {
  */
 @Composable
 actual fun ShareButton(
-    translatedText: () -> String
+    translatedText: () -> String,
+    enabled: Boolean,
+    modifier: Modifier,
 ) {
-    val context = LocalContext.current
     val shareItem = rememberLauncherForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) {}
 
-    IconButton(
+    ActionButton(
         onClick = {
             runCatching {
                 val text = translatedText()
@@ -78,6 +80,10 @@ actual fun ShareButton(
                     )
                 }
             }
-        }
-    ) { Icon(Icons.Default.Share, contentDescription = "Share translation") }
+        },
+        enabled = enabled,
+        imageVector = Icons.Default.Share,
+        contentDescription = "Share translation",
+        modifier = modifier
+    )
 }

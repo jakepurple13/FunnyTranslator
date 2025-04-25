@@ -3,8 +3,11 @@ package com.gabb.funnytranslator
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material3.*
+import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import platform.UIKit.UIActivityViewController
 import platform.UIKit.UIApplication
 import platform.UIKit.UIDevice
@@ -42,8 +45,12 @@ actual fun getColorScheme(): ColorScheme {
  * @param translatedText A function that returns the text to be shared
  */
 @Composable
-actual fun ShareButton(translatedText: () -> String) {
-    IconButton(
+actual fun ShareButton(
+    translatedText: () -> String,
+    enabled: Boolean,
+    modifier: Modifier,
+) {
+    ActionButton(
         onClick = {
             runCatching {
                 val text = translatedText()
@@ -57,6 +64,10 @@ actual fun ShareButton(translatedText: () -> String) {
                     )
                 }
             }
-        }
-    ) { Icon(Icons.Default.Share, contentDescription = "Share translation") }
+        },
+        enabled = enabled,
+        imageVector = Icons.Default.Share,
+        contentDescription = "Share translation",
+        modifier = modifier
+    )
 }

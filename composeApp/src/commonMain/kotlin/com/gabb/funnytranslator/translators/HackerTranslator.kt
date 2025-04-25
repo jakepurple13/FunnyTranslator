@@ -9,6 +9,8 @@ import kotlin.random.Random
 
 data object HackerTranslator : Translator {
 
+    override val lottiePath: String = "folder.json"
+
     private val leetSpeakMap = mapOf(
         'a' to listOf("4", "@", "/-\\"),
         'b' to listOf("8", "|3", "13"),
@@ -147,7 +149,7 @@ data object HackerTranslator : Translator {
         }
     }
 
-    override fun toString(): String = "Hacker Translator"
+    override fun toString(): String = "Hacker"
 
     @Composable
     override fun getColor(): Color = Color(0xFF00FF00) // Matrix green

@@ -8,6 +8,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import kotlin.random.Random
 
 data object Pirate : Translator {
+
+    override val lottiePath: String = "wave.json"
+
     private val englishToPirate = mapOf(
         // Basic replacements
         "hello" to "ahoy",
@@ -275,7 +278,7 @@ data object Pirate : Translator {
         return result
     }
 
-    override fun toString(): String = "Pirate Translator"
+    override fun toString(): String = "Pirate"
 
     @Composable
     override fun getColor(): Color {

@@ -36,4 +36,6 @@ interface Translator {
      */
     @Composable
     fun getIcon(): ImageVector = Icons.Default.CatchingPokemon
+
+    val lottiePath: String? get() = null
 }

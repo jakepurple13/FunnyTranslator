@@ -12,6 +12,9 @@ import kotlin.random.Random
  * Features include word replacements, character substitutions, stuttering, and emoji additions.
  */
 data object Uwuify : Translator {
+
+    override val lottiePath: String = "magic_wand.json"
+
     // Chance constants
     private const val STUTTER_CHANCE = 20
     private const val EMOJI_CHANCE = 50
@@ -184,7 +187,7 @@ data object Uwuify : Translator {
      */
     private fun randomWithChance(chance: Int): Boolean = Random.nextInt(1, 101) <= chance
 
-    override fun toString(): String = "Uwu Translator"
+    override fun toString(): String = "Uwu"
 
     @Composable
     override fun getColor(): Color = Color(0xffEEC7FF)

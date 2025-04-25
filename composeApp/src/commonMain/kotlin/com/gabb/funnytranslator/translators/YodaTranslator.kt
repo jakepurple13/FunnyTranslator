@@ -9,6 +9,8 @@ import kotlin.random.Random
 
 data object YodaTranslator : Translator {
 
+    override val lottiePath: String = "galaxy.json"
+
     private val yodaPhrases = listOf(
         "Hmm, ",
         "Yes, yes. ",
@@ -74,7 +76,7 @@ data object YodaTranslator : Translator {
         return withPhrase + yodaEndings.random()
     }
 
-    override fun toString(): String = "Yoda Translator"
+    override fun toString(): String = "Yoda"
 
     @Composable
     override fun getColor(): Color {

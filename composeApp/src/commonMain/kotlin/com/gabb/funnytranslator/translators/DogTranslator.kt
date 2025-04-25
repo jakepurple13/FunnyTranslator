@@ -11,6 +11,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
  * Replaces each word with either "Woof" or "Bark" randomly.
  */
 data object DogTranslator : Translator {
+
+    override val lottiePath: String = "golden_retriever.json"
+
     /**
      * The possible dog sounds to use in translation
      */
@@ -34,5 +37,5 @@ data object DogTranslator : Translator {
     @Composable
     override fun getIcon(): ImageVector = Icons.Default.Pets
 
-    override fun toString(): String = "Dog Translator"
+    override fun toString(): String = "Dog"
 }

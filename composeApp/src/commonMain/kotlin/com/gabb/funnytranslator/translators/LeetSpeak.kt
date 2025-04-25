@@ -11,6 +11,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
  * Replaces certain letters with numbers or symbols that resemble them.
  */
 data object LeetSpeak : Translator {
+
+    override val lottiePath: String = "html.json"
+
     /**
      * Map of characters to their leet speak equivalents
      */
@@ -29,7 +32,7 @@ data object LeetSpeak : Translator {
         return text.lowercase().map { LEET_MAP[it] ?: it }.joinToString("")
     }
 
-    override fun toString(): String = "LeetSpeak Translator"
+    override fun toString(): String = "LeetSpeak"
 
     @Composable
     override fun getColor(): Color = Color(0xff73FF00)

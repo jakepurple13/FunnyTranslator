@@ -8,6 +8,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 
 data object GrootTranslator : Translator {
 
+    override val lottiePath: String = "autumn_tree.json"
+
     private val iAmGrootWords = arrayOf("I", "am", "Groot")
 
     override fun translate(text: String): String {
@@ -20,7 +22,7 @@ data object GrootTranslator : Translator {
                 .joinToString(" ")
     }
 
-    override fun toString(): String = "Groot Translator"
+    override fun toString(): String = "Groot"
 
     @Composable
     override fun getColor(): Color {

@@ -5,6 +5,7 @@ import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 
 /**
  * WebAssembly implementation of the Platform interface.
@@ -39,6 +40,6 @@ actual fun getColorScheme(): ColorScheme {
  * @param translatedText A function that returns the text to be shared
  */
 @Composable
-actual fun ShareButton(translatedText: () -> String) {
+actual fun ShareButton(translatedText: () -> String, enabled: Boolean, modifier: Modifier) {
 
 }
