@@ -2,9 +2,13 @@ package com.gabb.funnytranslator
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.*
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Clear
@@ -39,7 +43,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
  */
 internal object AppConstants {
     const val APP_TITLE = "Funny Translator"
-    const val TEXT_FIELD_LABEL = "Text to translate"
+    const val TEXT_FIELD_LABEL = "Enter Text"
     const val COPIED_MESSAGE = "Copied to clipboard"
     const val NO_TRANSLATOR_SELECTED = "No translator selected"
     const val NO_TRANSLATION = "No translation"
@@ -77,11 +81,7 @@ fun App(
             },
             tween(durationMillis = AppConstants.ANIMATION_DURATION)
         )
-    ) {
-        TranslatorContent(
-            translatorViewModel = translatorViewModel
-        )
-    }
+    ) { TranslatorContent(translatorViewModel = translatorViewModel) }
 }
 
 /**
@@ -137,7 +137,7 @@ fun TranslatorContent(
         containerColor = MaterialTheme.colorScheme.secondaryContainer
     ) { padding ->
         Column(
-            verticalArrangement = Arrangement.SpaceBetween,
+            verticalArrangement = Arrangement.spacedBy(4.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxSize()
@@ -146,10 +146,22 @@ fun TranslatorContent(
         ) {
             OutlinedTextField(
                 value = translatorViewModel.text,
-                onValueChange = { translatorViewModel.text = it.take(AppConstants.MAX_TEXT_LENGTH) },
+                onValueChange = translatorViewModel::setTextToTranslate,
                 label = { Text(AppConstants.TEXT_FIELD_LABEL) },
                 shape = MaterialTheme.shapes.medium,
-                supportingText = { Text("${translatorViewModel.text.length}/${AppConstants.MAX_TEXT_LENGTH}") },
+                supportingText = {
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        Text("${translatorViewModel.text.length}/${AppConstants.MAX_TEXT_LENGTH}")
+
+                        // Display the current platform name at the bottom of the screen
+                        // This helps identify which platform the app is running on
+                        // (Android, iOS, Desktop, etc.)
+                        Text(getPlatform().name)
+                    }
+                },
                 trailingIcon = {
                     AnimatedVisibility(
                         visible = translatorViewModel.text.isNotBlank(),
@@ -157,7 +169,7 @@ fun TranslatorContent(
                         exit = fadeOut() + shrinkOut(shrinkTowards = Alignment.CenterStart),
                     ) {
                         IconButton(
-                            onClick = { translatorViewModel.text = "" },
+                            onClick = { translatorViewModel.setTextToTranslate("") },
                         ) { Icon(Icons.Default.Clear, contentDescription = "Clear input text") }
                     }
                 },
@@ -173,7 +185,9 @@ fun TranslatorContent(
                 enter = fadeIn() + expandIn(expandFrom = Alignment.Center),
                 exit = fadeOut() + shrinkOut(shrinkTowards = Alignment.Center),
             ) {
-                AnimatedContent(translatorViewModel.currentTranslator) { target ->
+                AnimatedContent(
+                    translatorViewModel.currentTranslator
+                ) { target ->
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -204,13 +218,47 @@ fun TranslatorContent(
                 }
             }
 
-            // Display the current platform name at the bottom of the screen
-            // This helps identify which platform the app is running on (Android, iOS, Desktop, etc.)
-            Text(
-                getPlatform().name,
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.5f),
-            )
+            val isEnabled by remember(
+                translatorViewModel.text,
+                translatorViewModel.currentTranslator,
+                translatorViewModel.isTranslating
+            ) {
+                derivedStateOf {
+                    translatorViewModel.text.isNotBlank() &&
+                            translatorViewModel.currentTranslator != null &&
+                            !translatorViewModel.isTranslating
+                }
+            }
+
+            AnimatedVisibility(isEnabled) {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    HorizontalDivider(
+                        color = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.padding(AppConstants.DEFAULT_PADDING)
+                    )
+
+                    Text(
+                        "Translated text: ",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = OutlinedTextFieldDefaults.colors()
+                            .focusedLabelColor,//MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                        modifier = Modifier.padding(horizontal = AppConstants.DEFAULT_PADDING)
+                    )
+
+                    SelectionContainer {
+                        Text(
+                            translatorViewModel.translatedText,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier
+                                .padding(horizontal = AppConstants.DEFAULT_PADDING)
+                                .fillMaxWidth()
+                        )
+                    }
+                }
+            }
+
         }
     }
 }
@@ -312,9 +360,7 @@ private fun TranslatedContent(
 
             ActionButton(
                 enabled = isEnabled,
-                onClick = {
-                    translatorViewModel.text = translatorViewModel.translatedText.take(AppConstants.MAX_TEXT_LENGTH)
-                },
+                onClick = { translatorViewModel.setTextToTranslate(translatorViewModel.translatedText) },
                 imageVector = Icons.Default.SwapVert,
                 contentDescription = "Use translation as input",
                 modifier = Modifier.weight(.25f)
@@ -335,7 +381,7 @@ private fun TranslatedContent(
             )
         }
 
-        AnimatedVisibility(isEnabled) {
+        /*AnimatedVisibility(isEnabled) {
             Text(
                 translatorViewModel.translatedText,
                 color = MaterialTheme.colorScheme.onSurface,
@@ -349,7 +395,7 @@ private fun TranslatedContent(
                     .padding(AppConstants.DEFAULT_PADDING)
                     .fillMaxWidth()
             )
-        }
+        }*/
     }
 }
 
