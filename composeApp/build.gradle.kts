@@ -74,7 +74,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.material.kolor)
-            implementation("io.github.alexzhirkevich:compottie:2.0.0-rc04")
+            implementation(libs.compottie)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
