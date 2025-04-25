@@ -35,12 +35,11 @@ jobs:
           set -x
           echo "VERSION_TAG=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
 
-      #      - name: Bump version
-      #        uses: chkfung/android-version-actions@v1.1
-      #        with:
-      #          gradlePath: composeApp/build.gradle.kts
-      #          versionCode: ${{github.run_number}}
-      #          versionName: ${{ env.VERSION_TAG }}
+      - name: Export Libraries
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: current
+          arguments: "exportLibraryDefinitions"
 
       - name: Build Artifacts
         id: buildApks
@@ -54,7 +53,7 @@ jobs:
 
       - uses: kevin-david/zipalign-sign-android-release@v2.0.1
         name: Sign app APK
-        id: app_sign
+        id: funnytranslator_sign
         with:
           releaseDirectory: composeApp/build/outputs/bundle/release/
           signingKeyBase64: ${{ secrets.SIGNING_KEY }}
@@ -62,8 +61,42 @@ jobs:
           keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
 
+      - name: Clean up build artifacts
+        run: |
+          cp ${{ steps.funnytranslator_sign.outputs.signedReleaseFile }} funnytranslator-release.aab
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Signed funnytranslator App
+          path: funnytranslator-release.aab
+
+  apk:
+    name: Generate Apk
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: adopt
+          java-version: 21
+
+      - name: Get tag name
+        id: get_tag_name
+        run: |
+          set -x
+          echo "VERSION_TAG=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
+
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: current
+          arguments: "exportLibraries"
+
       - name: Build Artifacts
-        id: buildApks2
+        id: buildApks
         uses: gradle/gradle-build-action@v2
         with:
           gradle-version: current
@@ -73,26 +106,23 @@ jobs:
           arguments: composeApp:assembleRelease
 
       - uses: kevin-david/zipalign-sign-android-release@v2.0.1
-        name: Sign app APK2
-        id: app_apk_sign
+        name: Sign app APK
+        id: funnytranslator_apk_sign
         with:
           releaseDirectory: composeApp/build/outputs/apk/release/
           signingKeyBase64: ${{ secrets.SIGNING_KEY }}
           alias: ${{ secrets.ALIAS }}
           keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
+        env:
+          # override default build-tools version (33.0.0) -- optional
+          BUILD_TOOLS_VERSION: "34.0.0"
 
       - name: Clean up build artifacts
         run: |
-          cp ${{ steps.app_sign.outputs.signedReleaseFile }} app-release.aab
-          cp ${{ steps.app_sign.outputs.signedReleaseFile }} app-release.apk
+          cp ${{ steps.funnytranslator_apk_sign.outputs.signedReleaseFile }} funnytranslator-release.apk
 
       - uses: actions/upload-artifact@v4
         with:
-          name: Signed App App
-          path: app-release.aab
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: Signed App Apk
-          path: app-release.apk
+          name: Signed funnytranslator Apk
+          path: funnytranslator-release.apk
