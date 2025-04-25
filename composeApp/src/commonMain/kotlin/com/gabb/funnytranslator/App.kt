@@ -7,6 +7,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
@@ -217,8 +218,6 @@ fun TranslatorContent(
                 }
             }
 
-            //Spacer(Modifier.height(0.dp))
-
             val isEnabled by remember(
                 translatorViewModel.text,
                 translatorViewModel.currentTranslator,
@@ -248,13 +247,15 @@ fun TranslatorContent(
                         modifier = Modifier.padding(horizontal = AppConstants.DEFAULT_PADDING)
                     )
 
-                    Text(
-                        translatorViewModel.translatedText,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier
-                            .padding(horizontal = AppConstants.DEFAULT_PADDING)
-                            .fillMaxWidth()
-                    )
+                    SelectionContainer {
+                        Text(
+                            translatorViewModel.translatedText,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier
+                                .padding(horizontal = AppConstants.DEFAULT_PADDING)
+                                .fillMaxWidth()
+                        )
+                    }
                 }
             }
 
