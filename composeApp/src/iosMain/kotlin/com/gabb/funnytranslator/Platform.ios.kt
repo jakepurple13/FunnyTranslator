@@ -71,3 +71,5 @@ actual fun ShareButton(
         modifier = modifier
     )
 }
+
+actual fun Modifier.imeNestedPadding(): Modifier = this

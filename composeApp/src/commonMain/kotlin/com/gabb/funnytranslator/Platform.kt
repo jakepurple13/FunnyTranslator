@@ -19,3 +19,5 @@ expect fun ShareButton(
     enabled: Boolean,
     modifier: Modifier,
 )
+
+expect fun Modifier.imeNestedPadding(): Modifier

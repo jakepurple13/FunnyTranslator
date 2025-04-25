@@ -107,4 +107,8 @@ class TranslatorViewModel(
      * @return The translated text, or null if no translator is selected
      */
     fun translate(text: String): String? = currentTranslator?.translate(text)
+
+    fun setTextToTranslate(text: String) {
+        this.text = text.take(AppConstants.MAX_TEXT_LENGTH)
+    }
 }

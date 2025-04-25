@@ -43,3 +43,5 @@ actual fun getColorScheme(): ColorScheme {
 actual fun ShareButton(translatedText: () -> String, enabled: Boolean, modifier: Modifier) {
 
 }
+
+actual fun Modifier.imeNestedPadding(): Modifier = this
