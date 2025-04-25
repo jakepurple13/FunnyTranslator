@@ -15,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalClipboardManager
@@ -281,7 +282,8 @@ private fun TranslatedContent(
                                 onClick = {
                                     translatorViewModel.currentTranslator = translator
                                     showTranslatorDialog = false
-                                }
+                                },
+                                shape = RectangleShape
                             ) {
                                 ListItem(
                                     headlineContent = { Text(text = translator.toString()) },

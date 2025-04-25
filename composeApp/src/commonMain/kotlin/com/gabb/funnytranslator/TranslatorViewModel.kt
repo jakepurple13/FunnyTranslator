@@ -85,7 +85,7 @@ class TranslatorViewModel(
             snapshotFlow { currentTranslator }
         ) { text, translator -> text }
             .onEach { isTranslating = it.isNotBlank() }
-            .debounce { Random.nextLong(1000, 1500) }
+            .debounce { Random.nextLong(1000, 2000) }
             .onEach { input ->
                 translatedText = if (input.isBlank()) {
                     AppConstants.NO_TRANSLATION
