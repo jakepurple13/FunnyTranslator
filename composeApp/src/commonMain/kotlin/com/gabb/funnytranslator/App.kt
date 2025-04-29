@@ -108,6 +108,14 @@ fun TranslatorContent(
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
+        topBar = {
+            TopAppBar(
+                title = { Text(AppConstants.APP_TITLE) },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.Transparent,
+                ),
+            )
+        },
         bottomBar = {
             Surface(
                 shape = RoundedCornerShape(
