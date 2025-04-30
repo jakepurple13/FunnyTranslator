@@ -35,7 +35,7 @@ data object LeetSpeak : Translator {
     override fun toString(): String = "LeetSpeak"
 
     @Composable
-    override fun getColor(): Color = Color(0xff73FF00)
+    override fun getColor(): Color = Color(0xff53C20F)
 
     @Composable
     override fun getIcon(): ImageVector = Icons.Default.Code

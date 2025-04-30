@@ -102,7 +102,7 @@ data object ValleyGirlTranslator : Translator {
 
     @Composable
     override fun getColor(): Color {
-        return Color(0xffFF26CC)
+        return Color(0xffD800AC)
     }
 
     @Composable

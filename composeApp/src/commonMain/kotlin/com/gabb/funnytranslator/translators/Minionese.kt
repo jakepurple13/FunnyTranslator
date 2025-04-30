@@ -47,7 +47,7 @@ data object Minionese : Translator {
 
     @Composable
     override fun getColor(): Color {
-        return Color(0xffFFEE00)
+        return Color(0xffFFD54D)
     }
 
     @Composable

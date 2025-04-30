@@ -404,7 +404,7 @@ data object ShakespeareTranslator : Translator {
 
     @Composable
     override fun getColor(): Color {
-        return Color(0xff023094)
+        return Color(0xff3B5BA0)
     }
 
     @Composable

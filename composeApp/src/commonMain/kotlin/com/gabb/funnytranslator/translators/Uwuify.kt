@@ -190,7 +190,7 @@ data object Uwuify : Translator {
     override fun toString(): String = "Uwu"
 
     @Composable
-    override fun getColor(): Color = Color(0xffEEC7FF)
+    override fun getColor(): Color = Color(0xffD086F0)
 
     @Composable
     override fun getIcon(): ImageVector = Icons.Default.EmojiEmotions

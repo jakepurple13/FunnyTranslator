@@ -80,7 +80,7 @@ data object YodaTranslator : Translator {
 
     @Composable
     override fun getColor(): Color {
-        return Color(0xffBAE997)
+        return Color(0xff6C8F53)
     }
 
     @Composable

@@ -152,7 +152,7 @@ data object HackerTranslator : Translator {
     override fun toString(): String = "Hacker"
 
     @Composable
-    override fun getColor(): Color = Color(0xFF00FF00) // Matrix green
+    override fun getColor(): Color = Color(0xFF63AD58) // Matrix green
 
     @Composable
     override fun getIcon(): ImageVector = Icons.Default.Code

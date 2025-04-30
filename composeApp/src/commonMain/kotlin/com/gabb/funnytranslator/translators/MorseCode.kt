@@ -89,7 +89,7 @@ data object MorseCode: Translator {
 
     @Composable
     override fun getColor(): Color {
-        return Color(0xffACACAC)
+        return Color(0xff757575)
     }
 
     @Composable

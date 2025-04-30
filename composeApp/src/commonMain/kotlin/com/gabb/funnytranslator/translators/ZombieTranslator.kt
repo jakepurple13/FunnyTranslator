@@ -152,7 +152,7 @@ data object ZombieTranslator : Translator {
     override fun toString(): String = "Zombie"
 
     @Composable
-    override fun getColor(): Color = Color(0xff4CAF50) // Zombie green
+    override fun getColor(): Color = Color(0xff626B25) // Zombie green
 
     @Composable
     override fun getIcon(): ImageVector {

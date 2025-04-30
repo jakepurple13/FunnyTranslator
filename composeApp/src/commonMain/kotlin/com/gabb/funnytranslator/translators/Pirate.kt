@@ -282,7 +282,7 @@ data object Pirate : Translator {
 
     @Composable
     override fun getColor(): Color {
-        return Color(0xffFF0000)
+        return Color(0xffEB0200)
     }
 
     @Composable
