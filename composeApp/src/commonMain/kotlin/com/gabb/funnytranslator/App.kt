@@ -203,7 +203,8 @@ fun TranslatorContent(
                             Image(
                                 painter = rememberLottiePainter(
                                     composition = lottie,
-                                    iterations = Compottie.IterateForever
+                                    iterations = Compottie.IterateForever,
+                                    enableExpressions = true
                                 ),
                                 null,
                                 modifier = Modifier.size(200.dp)
