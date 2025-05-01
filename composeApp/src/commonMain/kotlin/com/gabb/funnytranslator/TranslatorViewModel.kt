@@ -37,7 +37,7 @@ class TranslatorViewModel(
         YodaTranslator,
         ZombieTranslator,
         HackerTranslator,
-    )
+    ).sortedBy { it.toString() }
 
     /**
      * The currently selected translator.
