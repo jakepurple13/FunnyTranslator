@@ -42,7 +42,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
  * Constants used throughout the UI
  */
 internal object AppConstants {
-    const val APP_TITLE = "Funny Translator"
+    const val APP_TITLE = "Sillyble"
     const val TEXT_FIELD_LABEL = "Enter Text"
     const val COPIED_MESSAGE = "Copied to clipboard"
     const val NO_TRANSLATOR_SELECTED = "No translator selected"

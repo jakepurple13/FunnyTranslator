@@ -32,7 +32,7 @@ fun main() = application {
 
     Window(
         onCloseRequest = ::exitApplication,
-        title = "FunnyTranslator",
+        title = "Sillyble",
         state = windowState,
         undecorated = true,
         transparent = true,
@@ -64,7 +64,7 @@ fun main() = application {
                 ) {
                     Column(modifier = Modifier.fillMaxSize()) {
                         CustomTitleBar(
-                            title = "Funny Translator",
+                            title = "Sillyble",
                             onMinimizeClick = { windowState.isMinimized = true },
                             onCloseClick = ::exitApplication
                         )
