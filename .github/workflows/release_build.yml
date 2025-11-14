@@ -35,7 +35,7 @@ jobs:
       group: ${{ github.workflow }}-${{ github.ref }}-web
       cancel-in-progress: true
 
-  deploy:
+  release-web:
     # Add a dependency to the build job
     needs: web
 
