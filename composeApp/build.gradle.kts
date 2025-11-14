@@ -13,6 +13,11 @@ plugins {
     id("org.jetbrains.compose.hot-reload")
 }
 
+if (file("google-services.json").exists()) {
+    apply(plugin = libs.plugins.googleGmsGoogleServices.get().pluginId)
+    apply(plugin = libs.plugins.googleFirebaseCrashlytics.get().pluginId)
+}
+
 kotlin {
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
@@ -36,7 +41,7 @@ kotlin {
     
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
-        moduleName = "composeApp"
+        outputModuleName.set("composeApp")
         browser {
             val rootDirPath = project.rootDir.path
             val projectDirPath = project.projectDir.path
@@ -91,8 +96,8 @@ android {
         applicationId = "com.gabb.funnytranslator"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 5
-        versionName = "1.0.6"
+        versionCode = 6
+        versionName = "1.0.7"
     }
 
     packaging {
@@ -113,6 +118,12 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    dependencies {
+        if (file("google-services.json").exists()) {
+            implementation(libs.firebase.crashlytics)
+        }
     }
 }
 
