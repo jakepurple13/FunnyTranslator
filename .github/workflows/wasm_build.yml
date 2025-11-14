@@ -1,5 +1,15 @@
 name: Publish Application on GitHub Pages
-on: [ push, pull_request ]
+
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - '.github/**'
+
+  workflow_call:
+  workflow_dispatch:
+
 jobs:
   # Build job
   build:
