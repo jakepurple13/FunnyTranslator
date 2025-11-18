@@ -96,8 +96,8 @@ android {
         applicationId = "com.gabb.funnytranslator"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 6
-        versionName = "1.0.7"
+        versionCode = 7
+        versionName = "1.0.8"
     }
 
     packaging {
